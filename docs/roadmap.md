@@ -2,118 +2,146 @@
 
 This repository should grow by adding **evidence**, not by pretending to become production middleware too early.
 
-The original v0.1 → v0.8 ladder was too confident before the abstraction had been validated. The roadmap is now question-driven.
+The original v0.1 → v0.8 ladder was too confident before the abstraction had been validated. The roadmap is now question-driven and every prototype must update the research board and learning journey.
 
-## First decisive demo — Legibility test
-
-Goal: test whether a materialized checkout is more useful than reading policy/configuration directly.
-
-Build one single-page browser prototype with:
-
-- local canonical-state JSON
-- deterministic TypeScript checkout materializer
-- one procurement task
-- one actor
-- a visible checkout with resources, capabilities, provenance and expiry
-- a hardcoded clean action sequence
-- a hardcoded adversarial action sequence
-- live effect decisions: `ALLOW`, `DENY`, `REQUIRE_APPROVAL`, `NOT_AVAILABLE`
-- checkout revisions
-- a prominent checkout diff view
-
-Suggested layout:
+## Current sequence
 
 ```text
-┌──────────────────────┬────────────────────────┐
-│ CURRENT CHECKOUT     │ AGENT / ACTION TRACE   │
-│ resources            │                        │
-│ capabilities         │                        │
-│ provenance           │                        │
-│ expiry               │                        │
-├──────────────────────┴────────────────────────┤
-│ CHECKOUT DIFF                                 │
-├───────────────────────────────────────────────┤
-│ LIVE EFFECT LOG                               │
-└───────────────────────────────────────────────┘
+00    static boundary simulator
+01    authority legibility
+01.1  single-artifact dual consumption
+02    authority research board
+03    Break the Checkout
+04    live authority drift
+05    split projection / trust boundary
+06    delegation trace — horizon
 ```
 
-Do **not** wire an LLM first. Hardcode the attempted actions so model variability cannot hide whether the representation itself is useful.
+## What has been learned so far
 
-Primary question:
+### Legibility alone was not enough
 
-> Can a developer explain the agent's current effective authority and what changed between revisions more reliably from the checkout than from the underlying policy/configuration alone?
+A prettier permissions view already has substantial prior art. The project narrowed to one stronger requirement:
 
-Kill criterion:
+> the runtime and the human inspector should consume the same execution-scoped authority artifact.
 
-> If the checkout tells the developer nothing the policy file already tells them, this is only a visualization of existing policy machinery. Narrow or stop the project rather than decorating it.
+### Compilation alone was not enough
 
-## Early branch candidate — Delegation legibility
+Shipped systems already compile/project policy for AI applications. Compilation itself is not a novelty claim.
 
-If the first demo shows value, delegation moves near the front of the research queue.
+### Dual consumption alone was not enough
+
+Prototype 04 added time: a derived checkout must show what is snapshot-safe, what needs live revalidation, and what upstream changes invalidate the artifact.
+
+### Freshness alone was not enough
+
+Prototype 05 adds trust provenance. A checkout can be consistent and current yet still be unsafe if it flattens authoritative control-plane state and hostile-influenced context into one derivation path.
+
+Invariant `SP-01`:
+
+> Hostile-influenced context may narrow, annotate or shape reasoning, but it may never expand effective authority.
+
+## Next decisive experiment — Approval Fatigue / Effect-Gate Failure
+
+The live effect gate currently assumes that sending a consequential action to a human creates a strong safety boundary.
+
+That assumption should be tested, not inherited.
 
 Minimal experiment:
 
 ```text
-human / service
-      ↓ delegates
-Agent A
-      ↓ delegates
-Agent B
-      ↓ invokes
-Tool / effect
+benign approval requests
+benign approval requests
+ambiguous request
+benign approval requests
+malicious / policy-breaking request
+more benign requests
 ```
 
-Represent:
+Measure:
 
-- originating authority
-- inherited authority
-- narrowing / expansion at each hop
-- expiry
-- final effect
-- attribution
+- correct approvals / rejections
+- false approvals
+- time per decision
+- confidence
+- position-in-sequence effect
+- performance as approval volume rises
 
-Question:
+Primary question:
 
-> Does a materialized authority trace make a delegation chain easier to understand than isolated authorization logs?
+> Does a human approval gate remain a meaningful safety boundary as benign approval volume and ambiguity increase?
 
-Do not claim this gap is unique or unsolved until the multi-agent related work is reviewed more deeply.
+Kill / change criterion:
 
-## Early branch candidate — Pause authority
+> If reviewer accuracy degrades materially under realistic approval volume, human approval cannot be treated as the default answer for consequential effects. The architecture should determinize more decisions and reserve human review for genuine ambiguity.
 
-Represent, initially without implementing:
+## Near-term adversarial work
 
-- who may halt an agent
-- which runtime/capabilities are revoked
-- whether monitoring may invoke the pause path
-- propagation delay / freshness
-- who may restart the agent
+Break the Checkout should evolve with every architecture prototype rather than as a separate later phase.
 
-Question:
+Current high-value challenges:
 
-> Is "who can stop this actor right now?" part of effective authority and therefore something the checkout should make visible?
+- `AC-04` — prove runtime and human view consume different state
+- `AC-05` — make runtime trust stale authority
+- `AC-06` — make hostile-influenced context mint authority
+
+Successful breaks should become regression fixtures or explicit reasons to change the concept.
+
+## Blocking architecture decision — APS
+
+Before building delegation semantics, read the Agent Passport System draft deeply enough to decide explicitly:
+
+```text
+Authority Checkout as a view/runtime artifact over APS-style delegation
+vs.
+Authority Checkout as a competing delegation model
+```
+
+The default direction should be to consume upstream identity/delegation semantics rather than reinvent them, but this remains an explicit research decision until verified.
 
 ## Conditional experiments
 
-Only pursue these if the preceding experiment creates a concrete question.
+### Delegation trace
 
-### Authority expansion
+Ingest an APS/OAuth-shaped delegation chain and materialize:
 
-Let the agent request another resource or capability. Record rationale, provenance, decision and the resulting checkout diff.
+- originating authority
+- inherited authority
+- monotonic narrowing / expansion attempts
+- expiry and revocation
+- final effect
+- attribution and provenance
 
-### Adversarial scenario library
+Question:
 
-Add indirect prompt injection, memory poisoning, cross-task access, stale authority and tool misuse as reproducible scenarios. Successful community breaks should become regression cases or reasons to change the model.
+> Does one materialized authority artifact make a delegation chain easier to understand than isolated authorization logs without replacing the upstream protocol?
+
+### Reconnaissance inversion
+
+Treat the checkout itself as an attacker aid and test whether compact authority legibility materially improves target selection.
+
+If it does, checkout visibility and redaction become part of the authority model.
 
 ### One real adapter
 
-Connect only a low-risk environment such as a temporary filesystem, test GitHub repo or mock mail service. The purpose is to test whether the visible checkout and actual runtime authority drift apart.
+Only after the local architecture survives, connect one low-risk real control-plane source or test environment.
+
+Possible directions:
+
+- real Purview-style policy projection as a credibility input
+- Entra/identity entitlement facts
+- APS-shaped delegation fixture
+- temporary GitHub/filesystem resource adapter
+
+The purpose is to test **distance between artifact and runtime**, not to claim integration breadth.
 
 ### Optional LLM run
 
 After deterministic sequences are understood, run the same scenario with an LLM and separately record:
 
 - what the model tried
-- what the checkout exposed
+- what context influenced it
+- what authority the checkout exposed
 - what the live effect gate permitted
 - what actually executed
 
@@ -123,7 +151,19 @@ The model is an experimental subject, not the enforcement boundary.
 
 ## Rule for every experiment
 
-Every experiment should add a learning-journey entry containing:
+Every prototype build must update, at minimum:
+
+```text
+experiments.js
+README.md
+prototype README
+learning journey
+research board when the claim landscape changes
+concept version when the architecture changes materially
+Break the Checkout when a new falsifiable invariant appears
+```
+
+Every experiment should preserve:
 
 ```text
 what I assumed
