@@ -1,8 +1,8 @@
 # Authority Checkout
 
-> **Agents shouldn't operate with ambient authority. Give them a checkout.**
+> **Make agent authority inspectable.**
 
-Authority Checkout is an exploratory reference model and research prototype for **task-scoped agent authority**.
+Authority Checkout is an exploratory reference model and research prototype for **task-scoped agent authority legibility**.
 
 The core idea is simple:
 
@@ -10,24 +10,30 @@ The core idea is simple:
 canonical systems
       │
       ▼
-authority checkout
+checkout-like projection
       │
       ▼
 agent
       │
       ▼
-requested effect
+requested consequential effect
       │
       ▼
-live authorization
+live effect gate
       │
       ▼
 canonical systems
 ```
 
-An agent should not automatically inherit every resource, memory item, credential, tool, and capability available to the host application. Instead, the system materializes a task-scoped working representation of what that agent may currently perceive and attempt.
+The project asks whether an agent's effective authority becomes easier for developers to reason about when it is materialized as a visible, inspectable and diffable object instead of remaining distributed across policy files, credentials, tool registrations, runtime state and logs.
 
-The project is inspired by the architectural inversion behind Delta-style checkouts: **the representation an agent works against does not need to be the authoritative state**. Here that idea is generalized from software worktrees to agent context and authority.
+The project is inspired by the architectural inversion behind Delta-style checkouts: **the representation an agent works against does not need to be the authoritative state**. Here that idea is generalized cautiously from software worktrees to task-scoped agent state and authority.
+
+## Current research question
+
+> **Can developers reason about an agent's effective authority more reliably when that authority is materialized as an inspectable, diffable object?**
+
+This is now primarily a **legibility experiment**, not a claim of a new security primitive.
 
 ## What this project is
 
@@ -43,59 +49,69 @@ It does **not** claim to:
 
 - solve prompt injection
 - derive perfect least privilege automatically
-- replace IAM
-- literally snapshot all of external reality
+- replace IAM, policy engines, sandboxes or capability systems
+- introduce novel deterministic enforcement outside the model
+- literally snapshot all external reality
+- address infrastructure-level sandbox escape or credential harvesting by itself
+- have prevented the July 2026 OpenAI/Hugging Face incident
 - make autonomous agents safe
 - introduce a fundamentally new security primitive
 
-Existing work already covers least privilege, capability systems, sandboxing, information-flow control, task-specific policy, externalized memory and mediated tools. The question here is narrower:
+## v0.2 model
 
-> **Is an authority checkout a useful systems abstraction for making agent runtime authority easier to inspect, constrain, version and test?**
+The current model separates three questions that were originally mixed together.
 
-## Core model
+### Projection
 
-An Authority Checkout may include:
+Checkout-like and inspectable:
 
-- actor identity and delegation
-- current task
 - visible resources
 - projected memory
-- available tools
-- effective capabilities
+- read capabilities
+- tools
 - provenance
-- constraints
+- identity / delegation context
 - expiry / freshness
 
-The checkout is not itself sufficient authorization for consequential effects. Sensitive or irreversible actions should cross a live authorization boundary at execution time.
+It should be versionable and diffable.
 
-## First experiment
+### Effect gate
 
-The initial scenario is intentionally small: a procurement agent comparing one supplier quote.
+Consequential effects are not treated like mergeable source-code changes. Actions such as sending, publishing, purchasing, transferring or deleting should be authorized live when they execute.
 
-It should be able to:
+### Pause authority
 
-- read the target supplier
-- read the target quote
-- create a comparison
+A newly explicit question:
 
-It should not receive ambient access to:
+> **Who can stop this agent right now, through which path, and what authority disappears when they do?**
 
-- employee salaries
-- unrelated invoices
-- arbitrary external email
-- payments
+This is currently a research primitive, not an implemented kill switch.
 
-We then intentionally give the model adversarial instructions and observe the difference between:
+## First decisive experiment
 
-1. what the model *tries* to do
-2. what exists in its checkout
-3. what the external boundary actually permits
+The initial scenario stays intentionally small: a procurement agent comparing one supplier quote.
+
+The first prototype should show, on one page:
+
+- the current checkout
+- an action/agent trace
+- a checkout diff between revisions
+- a live effect log
+
+Run it twice:
+
+1. clean task sequence
+2. adversarial action sequence
+
+The action sequence should be hardcoded first. An LLM comes later, so model variability does not hide whether the checkout representation itself is useful.
+
+### Kill criterion
+
+> **If the checkout tells the developer nothing useful beyond what the underlying policy/configuration already tells them, the project is only a visualization layer and should be narrowed or stopped.**
 
 ## Learning journey
 
-The project keeps a chronological record of how the idea changes under criticism and experimentation.
-
-Open `docs/journey/index.html` to see the current journal.
+Open `docs/journey/index.html` to see the chronological learning journal.
 
 Each entry records:
 
@@ -104,42 +120,39 @@ Each entry records:
 - what I learned
 - what changed in the model
 - what remains open
+- provenance / verification state when relevant
 
-The journal is intentionally data-driven: add or edit entries in `docs/journey/entries.js` and the HTML updates automatically. The goal is to preserve the reasoning path rather than only publishing a cleaned-up final theory.
+The base entries live in `docs/journey/entries.js`. Later sparring sessions append separate files such as `entries-session-02.js`, so the history stays modular instead of being rewritten after every reframe.
 
 ## Repository map
 
 ```text
 concept/
-  authority-checkout.json   canonical project concept
+  authority-checkout.json        original v0.1 concept
+  authority-checkout.v0.2.json   current research reframe
 
 docs/
-  principles.md             architectural principles
-  limitations.md            where the idea breaks
-  related-work.md           adjacent ideas and systems
-  roadmap.md                iterative research/build path
+  principles.md
+  limitations.md
+  related-work.md
+  roadmap.md
   journey/
-    index.html               learning-journey renderer
-    entries.js               modular learning entries
+    index.html
+    entries.js
+    entries-session-02.js
 
 examples/
   procurement/
-    scenario.json           first controlled scenario
+    scenario.json
 
 prototype/
-  index.html                 dependency-free interactive prototype
+  index.html
 ```
 
 ## Current status
 
-**v0.1 — concept + static scenario + learning journal**
+**Session 02 — research reframe**
 
-The next implementation step is a tiny browser simulator that can:
+The security claims got smaller and the legibility question got bigger.
 
-1. load canonical state
-2. select an actor and task
-3. materialize an Authority Checkout
-4. show what is present and absent
-5. evaluate proposed actions as `ALLOW`, `DENY`, `APPROVAL`, or `NOT_AVAILABLE`
-
-No production security claims should be made from the prototype.
+Next build target: one decisive browser experiment centered on the **checkout diff**, not a production governance stack.
