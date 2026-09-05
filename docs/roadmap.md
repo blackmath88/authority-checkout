@@ -2,145 +2,139 @@
 
 This repository should grow by adding **evidence**, not by pretending to become production middleware too early.
 
-## v0.1 — Static Checkout
+The original v0.1 → v0.8 ladder was too confident before the abstraction had been validated. The roadmap is now question-driven.
 
-Goal: make the abstraction inspectable.
+## First decisive demo — Legibility test
 
-Build:
+Goal: test whether a materialized checkout is more useful than reading policy/configuration directly.
 
-- canonical state fixture
-- actor fixture
-- task fixture
-- deterministic checkout materializer
-- browser view of included / excluded state and capabilities
+Build one single-page browser prototype with:
+
+- local canonical-state JSON
+- deterministic TypeScript checkout materializer
+- one procurement task
+- one actor
+- a visible checkout with resources, capabilities, provenance and expiry
+- a hardcoded clean action sequence
+- a hardcoded adversarial action sequence
+- live effect decisions: `ALLOW`, `DENY`, `REQUIRE_APPROVAL`, `NOT_AVAILABLE`
+- checkout revisions
+- a prominent checkout diff view
+
+Suggested layout:
+
+```text
+┌──────────────────────┬────────────────────────┐
+│ CURRENT CHECKOUT     │ AGENT / ACTION TRACE   │
+│ resources            │                        │
+│ capabilities         │                        │
+│ provenance           │                        │
+│ expiry               │                        │
+├──────────────────────┴────────────────────────┤
+│ CHECKOUT DIFF                                 │
+├───────────────────────────────────────────────┤
+│ LIVE EFFECT LOG                               │
+└───────────────────────────────────────────────┘
+```
+
+Do **not** wire an LLM first. Hardcode the attempted actions so model variability cannot hide whether the representation itself is useful.
+
+Primary question:
+
+> Can a developer explain the agent's current effective authority and what changed between revisions more reliably from the checkout than from the underlying policy/configuration alone?
+
+Kill criterion:
+
+> If the checkout tells the developer nothing the policy file already tells them, this is only a visualization of existing policy machinery. Narrow or stop the project rather than decorating it.
+
+## Early branch candidate — Delegation legibility
+
+If the first demo shows value, delegation moves near the front of the research queue.
+
+Minimal experiment:
+
+```text
+human / service
+      ↓ delegates
+Agent A
+      ↓ delegates
+Agent B
+      ↓ invokes
+Tool / effect
+```
+
+Represent:
+
+- originating authority
+- inherited authority
+- narrowing / expansion at each hop
+- expiry
+- final effect
+- attribution
 
 Question:
 
-> Is the checkout representation immediately understandable?
+> Does a materialized authority trace make a delegation chain easier to understand than isolated authorization logs?
 
-## v0.2 — Action Boundary
+Do not claim this gap is unique or unsolved until the multi-agent related work is reviewed more deeply.
 
-Goal: separate model intent from executable authority.
+## Early branch candidate — Pause authority
 
-Build:
+Represent, initially without implementing:
 
-- proposed-action schema
-- deterministic evaluator
-- outcomes: `ALLOW`, `DENY`, `APPROVAL`, `NOT_AVAILABLE`
-- decision explanation
+- who may halt an agent
+- which runtime/capabilities are revoked
+- whether monitoring may invoke the pause path
+- propagation delay / freshness
+- who may restart the agent
 
 Question:
 
-> Can a user see why an action is possible or impossible without reading policy code?
+> Is "who can stop this actor right now?" part of effective authority and therefore something the checkout should make visible?
 
-## v0.3 — Agent Experiment
+## Conditional experiments
 
-Goal: introduce probabilistic reasoning without making it the security boundary.
+Only pursue these if the preceding experiment creates a concrete question.
 
-Build:
+### Authority expansion
 
-- optional LLM adapter
-- normal instruction scenario
-- adversarial / injected instruction scenario
-- attempt log
+Let the agent request another resource or capability. Record rationale, provenance, decision and the resulting checkout diff.
 
-Measure separately:
+### Adversarial scenario library
+
+Add indirect prompt injection, memory poisoning, cross-task access, stale authority and tool misuse as reproducible scenarios. Successful community breaks should become regression cases or reasons to change the model.
+
+### One real adapter
+
+Connect only a low-risk environment such as a temporary filesystem, test GitHub repo or mock mail service. The purpose is to test whether the visible checkout and actual runtime authority drift apart.
+
+### Optional LLM run
+
+After deterministic sequences are understood, run the same scenario with an LLM and separately record:
 
 - what the model tried
 - what the checkout exposed
-- what the boundary permitted
-- what effect executed
+- what the live effect gate permitted
+- what actually executed
 
-Question:
-
-> Does bounded authority remain meaningful when reasoning is compromised?
-
-## v0.4 — Authority Expansion
-
-Goal: preserve useful autonomy without ambient authority.
-
-Build:
-
-- agent requests new resource/capability
-- request rationale
-- policy or human decision
-- checkout revision
-
-Question:
-
-> Can explicit expansion work without turning every agent step into an approval workflow?
-
-## v0.5 — Checkout History
-
-Goal: make changing authority auditable.
-
-Build:
-
-- checkout IDs and versions
-- diff view
-- expiry / freshness metadata
-- reason for each expansion or reduction
-
-Question:
-
-> Is an authority diff a useful debugging and governance artifact?
-
-## v0.6 — Red-Team Scenario Library
-
-Goal: learn what the abstraction does and does not stop.
-
-Scenarios:
-
-- indirect prompt injection
-- memory poisoning
-- cross-task resource access
-- tool misuse
-- stale checkout
-- capability escalation
-
-Question:
-
-> Which attacks are constrained, unaffected, or made worse by the checkout model?
-
-## v0.7 — One Real Adapter
-
-Goal: test whether the concept survives contact with a real capability.
-
-Use a low-risk environment such as:
-
-- temporary filesystem
-- test GitHub repository
-- mock email service
-
-Do not start with production finance, enterprise mail or privileged infrastructure.
-
-Question:
-
-> Can the visible checkout and the actual runtime authority stay aligned?
-
-## v0.8 — Delegation
-
-Goal: explore two-agent authority propagation.
-
-Question:
-
-> When Agent A delegates to Agent B, what authority should B receive, and how do we avoid authority resetting or expanding across the hop?
+The model is an experimental subject, not the enforcement boundary.
 
 ---
 
-## Rule for every iteration
+## Rule for every experiment
 
-Each experiment should add an entry documenting:
+Every experiment should add a learning-journey entry containing:
 
 ```text
-hypothesis
-setup
-expected property
-observed behavior
-what checkout helped with
-what checkout did not help with
-new failure modes
-next question
+what I assumed
+what challenged it
+what I learned
+what changed
+what remains open
+source / provenance
+verification state
 ```
 
-A version can conclude that the idea is weaker than expected. That is a valid project result.
+A critique from another LLM is an **input**, not automatically a fact. Quantitative or publication-facing claims should be verified against primary sources where possible.
+
+A result that weakens or kills the idea is a valid project result.
