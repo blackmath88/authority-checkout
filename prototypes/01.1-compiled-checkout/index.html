@@ -6,30 +6,104 @@
 <title>Authority Checkout — Prototype 01.1</title>
 <style>
 :root{--bg:#0d0e10;--panel:#14161a;--ink:#f2f2ef;--muted:#91958e;--line:#2b2f35;--soft:#1a1d22;--good:#b9dfb9;--bad:#e0b2b2;--warn:#e5d29e}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:inherit}.wrap{width:min(1440px,calc(100% - 28px));margin:auto}.top{padding:28px 0 22px;border-bottom:1px solid var(--line)}.topline{display:flex;justify-content:space-between;gap:20px}.eyebrow{font:600 11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}h1{margin:8px 0 10px;font-size:clamp(34px,5vw,66px);line-height:.95;letter-spacing:-.05em}.lede{max-width:900px;color:#b9bbb6;line-height:1.55;margin:0}.back{font-size:12px;text-decoration:none;border:1px solid var(--line);padding:9px 11px;white-space:nowrap;height:max-content}.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}button{border:1px solid var(--line);background:#17191c;color:var(--ink);padding:9px 12px;cursor:pointer;font:600 12px/1 system-ui}button:hover,button.active{background:var(--ink);color:#111}main{padding:18px 0 56px}.grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:12px}.panel{border:1px solid var(--line);background:var(--panel);min-width:0}.head{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}.head h2{margin:0;font-size:12px;letter-spacing:.08em;text-transform:uppercase}.badge{font:600 10px/1 ui-monospace,monospace;border:1px solid var(--line);padding:5px 7px;color:var(--muted)}.body{padding:14px}.code{white-space:pre-wrap;font:12px/1.52 ui-monospace,SFMono-Regular,Menlo,monospace;color:#c8cac4;margin:0;overflow:auto;max-height:560px}.wide{grid-column:1/-1}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.step{border:1px solid var(--line);background:var(--soft);padding:12px}.step strong{display:block;margin-top:6px;font-size:13px}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.card{border:1px solid var(--line);background:#111316;padding:12px}.card h3{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}.card p{margin:0;font-size:12px;line-height:1.45;color:#c5c7c1}.diffline,.traceitem{font:12px/1.6 ui-monospace,monospace}.plus,.allow{color:var(--good)}.deny{color:var(--bad)}.approval{color:var(--warn)}.na{color:#a9aba6}.traceitem{display:grid;grid-template-columns:1fr 160px;gap:10px;border-bottom:1px solid #25282d;padding:8px 0}.decision{text-align:right;font-weight:700}.note{color:var(--muted);font-size:11px;line-height:1.5;margin-top:10px}.artifactline{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.chip{border:1px solid #353941;background:#1a1d22;padding:6px 8px;font:11px/1.2 ui-monospace,monospace}.artifactmeta{display:grid;grid-template-columns:120px 1fr;gap:8px 14px;font-size:12px;margin-bottom:14px}.artifactmeta span:nth-child(odd){color:var(--muted)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:inherit}.wrap{width:min(1440px,calc(100% - 28px));margin:auto}.top{padding:28px 0 22px;border-bottom:1px solid var(--line)}.topline{display:flex;justify-content:space-between;gap:20px}.eyebrow{font:600 11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}h1{margin:8px 0 10px;font-size:clamp(34px,5vw,66px);line-height:.95;letter-spacing:-.05em}.lede{max-width:900px;color:#b9bbb6;line-height:1.55;margin:0}.back{font-size:12px;text-decoration:none;border:1px solid var(--line);padding:9px 11px;white-space:nowrap;height:max-content}.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}button{border:1px solid var(--line);background:#17191c;color:var(--ink);padding:9px 12px;cursor:pointer;font:600 12px/1 system-ui}button:hover,button.active{background:var(--ink);color:#111}main{padding:18px 0 56px}.grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:12px}.panel{border:1px solid var(--line);background:var(--panel);min-width:0}.head{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}.head h2{margin:0;font-size:12px;letter-spacing:.08em;text-transform:uppercase}.badge{font:600 10px/1 ui-monospace,monospace;border:1px solid var(--line);padding:5px 7px;color:var(--muted)}.body{padding:14px}.code{white-space:pre-wrap;font:12px/1.52 ui-monospace,SFMono-Regular,Menlo,monospace;color:#c8cac4;margin:0;overflow:auto;max-height:560px}.wide{grid-column:1/-1}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.step{border:1px solid var(--line);background:var(--soft);padding:12px}.step strong{display:block;margin-top:6px;font-size:13px}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.card{border:1px solid var(--line);background:#111316;padding:12px}.card h3{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}.card p{margin:0;font-size:12px;line-height:1.45;color:#c5c7c1}.diffline,.traceitem{font:12px/1.6 ui-monospace,monospace}.plus,.allow{color:var(--good)}.minus,.deny{color:var(--bad)}.change,.approval{color:var(--warn)}.na{color:#a9aba6}.traceitem{display:grid;grid-template-columns:1fr 160px;gap:10px;border-bottom:1px solid #25282d;padding:8px 0}.decision{text-align:right;font-weight:700}.note{color:var(--muted);font-size:11px;line-height:1.5;margin-top:10px}.artifactline{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.chip{border:1px solid #353941;background:#1a1d22;padding:6px 8px;font:11px/1.2 ui-monospace,monospace}.artifactmeta{display:grid;grid-template-columns:120px 1fr;gap:8px 14px;font-size:12px;margin-bottom:14px}.artifactmeta span:nth-child(odd){color:var(--muted)}
 @media(max-width:900px){.grid,.flow,.cards{grid-template-columns:1fr}.wide{grid-column:auto}.topline{display:block}.back{display:inline-block;margin-top:14px}}
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap"><div class="topline"><div><div class="eyebrow">Prototype 01.1 · compiled checkout</div><h1>The checkout becomes the runtime artifact.</h1><p class="lede">Prototype 01 tested whether a materialized authority view is legible. 01.1 changes the architecture: policy, delegation and task inputs are compiled into a machine-readable checkout object. The UI and simulated runtime both consume that same object.</p></div><a class="back" href="../../index.html">← Research index</a></div><div class="controls"><button id="v1" class="active">Compile v1</button><button id="propose">Request history access</button><button id="v2">Approve + compile v2</button><button id="showJson">Toggle raw checkout.json</button></div></div></header>
+<header class="top"><div class="wrap"><div class="topline"><div><div class="eyebrow">Prototype 01.1 · single-artifact dual consumption</div><h1>One artifact. Two consumers.</h1><p class="lede">Prototype 01 tested legibility. 01.1 tests the stronger claim: source inputs compile into one checkout artifact, and both the human view and the simulated runtime consume that same artifact. If either consumer relies on parallel hidden authority state, the experiment fails.</p></div><a class="back" href="../../index.html">← Research index</a></div><div class="controls"><button id="v1" class="active">Compile baseline</button><button id="propose">Request history access</button><button id="v2">Approve + recompile</button><button id="showJson">Toggle raw checkout.json</button></div></div></header>
 <main class="wrap"><div class="grid">
-<section class="panel"><div class="head"><h2>Source inputs</h2><span class="badge">not the checkout</span></div><div class="body"><pre class="code" id="inputs"></pre></div></section>
+<section class="panel"><div class="head"><h2>Source inputs</h2><span class="badge">compiler input</span></div><div class="body"><pre class="code" id="inputs"></pre></div></section>
 <section class="panel"><div class="head"><h2>Compiled Authority Checkout</h2><span class="badge" id="revBadge">v1</span></div><div class="body"><div id="artifact"></div><pre class="code" id="raw" style="display:none"></pre></div></section>
-<section class="panel wide"><div class="head"><h2>Compile path</h2><span class="badge">same artifact feeds human + runtime</span></div><div class="body"><div class="flow"><div class="step"><span class="eyebrow">01</span><strong>Policy / IAM / task</strong></div><div class="step"><span class="eyebrow">02</span><strong>compileCheckout()</strong></div><div class="step"><span class="eyebrow">03</span><strong>checkout.json</strong></div><div class="step"><span class="eyebrow">04</span><strong>Viewer + runtime</strong></div></div></div></section>
-<section class="panel"><div class="head"><h2>Checkout diff</h2><span class="badge">artifact-to-artifact</span></div><div class="body" id="diff"></div></section>
-<section class="panel"><div class="head"><h2>Runtime effect trace</h2><span class="badge">evaluated from checkout</span></div><div class="body"><div id="trace"></div><div class="note">The prototype still simulates enforcement. The point of 01.1 is that the runtime decision logic reads the compiled checkout rather than separate UI constants.</div></div></section>
-<section class="panel wide"><div class="head"><h2>What changed conceptually</h2><span class="badge">01 → 01.1</span></div><div class="body"><div class="cards"><div class="card"><h3>Prototype 01</h3><p>The checkout was primarily a human-readable materialization of effective authority.</p></div><div class="card"><h3>Prototype 01.1</h3><p>The checkout is the compiled execution manifest. The human view is only one rendering of it.</p></div><div class="card"><h3>Kill criterion</h3><p>If this artifact is not useful to both runtime assembly and human inspection, the Delta-style checkout analogy remains cosmetic.</p></div></div></div></section>
+<section class="panel wide"><div class="head"><h2>Compile path</h2><span class="badge">same artifact feeds human + runtime</span></div><div class="body"><div class="flow"><div class="step"><span class="eyebrow">01</span><strong>Policy / task / delegation</strong></div><div class="step"><span class="eyebrow">02</span><strong>compileCheckout(inputs, grants)</strong></div><div class="step"><span class="eyebrow">03</span><strong>checkout.json</strong></div><div class="step"><span class="eyebrow">04</span><strong>Viewer + runtime</strong></div></div></div></section>
+<section class="panel"><div class="head"><h2>Checkout diff</h2><span class="badge">computed artifact-to-artifact</span></div><div class="body" id="diff"></div></section>
+<section class="panel"><div class="head"><h2>Runtime effect trace</h2><span class="badge">generic evaluation from checkout</span></div><div class="body"><div id="trace"></div><div class="note">The runtime evaluator reads only the compiled checkout: declared capabilities allow actions; declared effect rules return their configured decision; everything else is unavailable.</div></div></section>
+<section class="panel wide"><div class="head"><h2>What this prototype must prove</h2><span class="badge">dual consumption</span></div><div class="body"><div class="cards"><div class="card"><h3>Compiler honesty</h3><p>Changing source policy changes the compiled artifact. The left panel is real input, not decorative configuration.</p></div><div class="card"><h3>Consumer honesty</h3><p>The viewer, diff and runtime evaluator all derive behavior from checkout.json rather than their own permission constants.</p></div><div class="card"><h3>Kill criterion</h3><p>If runtime assembly or human inspection still depends on parallel hidden authority state, the checkout abstraction is cosmetic.</p></div></div></div></section>
 </div></main>
 <script>
-const sources={actor:{id:'procurement-agent-01',principal:'user:demo-owner',role:'procurement-assistant'},task:{id:'compare-quote',target:'quote:ACME-2026-17'},policy:{roleRules:['supplier.read on task supplier','quote.read on task quote','comparison.write draft'],history:'requires approved proposal',salary:'unavailable',externalEmail:'deny',payment:'approval_required'},delegation:{source:'grant:procurement-001',issuer:'procurement-owner',expires:'11:30'},control:{pauseBy:['security-operator','procurement-owner']}};
-const proposal={id:'P-17',resource:'supplier:ACME:history',capability:'supplier.history.read:ACME',reason:'Historical quotes needed to judge price variance',approvedBy:'procurement-owner'};
-function compileCheckout(revision=1){const expanded=revision===2;return {schema:'authority-checkout/runtime-manifest/v0.1',id:`checkout:procurement-001:v${revision}`,revision,actor:{id:sources.actor.id,principal:sources.actor.principal},task:sources.task,projection:{resources:['supplier:ACME','quote:ACME-2026-17',...(expanded?[proposal.resource]:[])],memory:['memory:procurement:ACME'],tools:['supplier.read','quote.read','comparison.write',...(expanded?['supplier.history.read']:[]) ]},authority:{source:sources.delegation.source,issuer:sources.delegation.issuer,capabilities:['supplier.read:ACME','quote.read:ACME-2026-17','comparison.write:draft',...(expanded?[proposal.capability]:[])],expires:expanded?'11:45':'11:30',provenance:['role:procurement-assistant','task:compare-quote',...(expanded?[`proposal:${proposal.id} approved by ${proposal.approvedBy}`]:[])]},effects:{'email.external.send':'DENY','payment.execute':'REQUIRE_APPROVAL'},control:{pauseBy:sources.control.pauseBy}}}
-let current=compileCheckout(1),proposalVisible=false;
-document.getElementById('inputs').textContent=JSON.stringify(sources,null,2);
-function render(){document.getElementById('revBadge').textContent=`v${current.revision}`;document.getElementById('raw').textContent=JSON.stringify(current,null,2);document.getElementById('artifact').innerHTML=`<div class="artifactmeta"><span>Checkout</span><strong>${current.id}</strong><span>Actor</span><strong>${current.actor.id}</strong><span>Principal</span><strong>${current.actor.principal}</strong><span>Task</span><strong>${current.task.id}</strong><span>Authority source</span><strong>${current.authority.source}</strong><span>Expires</span><strong>${current.authority.expires}</strong></div><div class="artifactline">${current.projection.resources.map(x=>`<span class="chip">resource · ${x}</span>`).join('')}</div><div class="artifactline">${current.projection.memory.map(x=>`<span class="chip">memory · ${x}</span>`).join('')}</div><div class="artifactline">${current.projection.tools.map(x=>`<span class="chip">tool · ${x}</span>`).join('')}</div><div class="artifactline">${current.authority.capabilities.map(x=>`<span class="chip">authority · ${x}</span>`).join('')}</div><div class="artifactline">${current.control.pauseBy.map(x=>`<span class="chip">pause · ${x}</span>`).join('')}</div>`;renderDiff();renderTrace()}
-function renderDiff(){let html='<div class="diffline">v1 baseline: supplier + quote + draft capability</div>';if(proposalVisible&&current.revision===1)html+=`<div class="diffline approval">proposal ${proposal.id} pending: + ${proposal.capability}</div>`;if(current.revision===2)html+=`<div class="diffline plus">+ ${proposal.resource}</div><div class="diffline plus">+ ${proposal.capability}</div><div class="diffline plus">+ provenance: proposal ${proposal.id}</div><div class="diffline plus">~ expiry 11:30 → 11:45</div>`;document.getElementById('diff').innerHTML=html}
-function decision(action){if(current.authority.capabilities.includes(action))return'ALLOW';if(action==='payment.execute')return current.effects[action];if(action==='email.external.send')return current.effects[action];return'NOT_AVAILABLE'}
-function renderTrace(){const actions=['quote.read:ACME-2026-17','supplier.history.read:ACME','employee.salary.read','email.external.send','payment.execute'];document.getElementById('trace').innerHTML=actions.map(a=>{const d=decision(a),cls=d==='ALLOW'?'allow':d==='DENY'?'deny':d==='REQUIRE_APPROVAL'?'approval':'na';return`<div class="traceitem"><span>${a}</span><span class="decision ${cls}">${d}</span></div>`}).join('')}
-document.getElementById('v1').onclick=()=>{current=compileCheckout(1);proposalVisible=false;render()};document.getElementById('propose').onclick=()=>{proposalVisible=true;renderDiff()};document.getElementById('v2').onclick=()=>{proposalVisible=true;current=compileCheckout(2);render()};document.getElementById('showJson').onclick=()=>{const r=document.getElementById('raw');r.style.display=r.style.display==='none'?'block':'none'};render();
+const baseInputs={
+  actor:{id:'procurement-agent-01',principal:'user:demo-owner',role:'procurement-assistant'},
+  task:{id:'compare-quote',target:'quote:ACME-2026-17'},
+  policy:{
+    resources:['supplier:ACME','quote:ACME-2026-17'],
+    memory:['memory:procurement:ACME'],
+    tools:['supplier.read','quote.read','comparison.write'],
+    capabilities:['supplier.read:ACME','quote.read:ACME-2026-17','comparison.write:draft'],
+    effects:{'email.external.send':'DENY','payment.execute':'REQUIRE_APPROVAL','data.export':'REQUIRE_APPROVAL'},
+    history:'requires approved proposal'
+  },
+  delegation:{source:'grant:procurement-001',issuer:'procurement-owner',expires:'11:30'},
+  control:{pauseBy:['security-operator','procurement-owner']}
+};
+const proposal={id:'P-17',resource:'supplier:ACME:history',tool:'supplier.history.read',capability:'supplier.history.read:ACME',reason:'Historical quotes needed to judge price variance',approvedBy:'procurement-owner',expires:'11:45'};
+function clone(x){return JSON.parse(JSON.stringify(x))}
+function compileCheckout(inputs,grants=[]){
+  const p=inputs.policy;
+  return {
+    schema:'authority-checkout/runtime-manifest/v0.1',
+    id:`checkout:${inputs.actor.id}:v${1+grants.length}`,
+    revision:1+grants.length,
+    actor:{id:inputs.actor.id,principal:inputs.actor.principal},
+    task:clone(inputs.task),
+    projection:{
+      resources:[...p.resources,...grants.map(g=>g.resource).filter(Boolean)],
+      memory:[...p.memory],
+      tools:[...p.tools,...grants.map(g=>g.tool).filter(Boolean)]
+    },
+    authority:{
+      source:inputs.delegation.source,
+      issuer:inputs.delegation.issuer,
+      capabilities:[...p.capabilities,...grants.map(g=>g.capability).filter(Boolean)],
+      expires:grants.reduce((expiry,g)=>g.expires||expiry,inputs.delegation.expires),
+      provenance:[`role:${inputs.actor.role}`,`task:${inputs.task.id}`,...grants.map(g=>`proposal:${g.id} approved by ${g.approvedBy}`)]
+    },
+    effects:clone(p.effects),
+    control:{pauseBy:[...inputs.control.pauseBy]}
+  }
+}
+const baseline=compileCheckout(baseInputs,[]);
+let current=baseline,proposalVisible=false,approvedGrants=[];
+document.getElementById('inputs').textContent=JSON.stringify({inputs:baseInputs,approvedGrants},null,2);
+function render(){
+  document.getElementById('inputs').textContent=JSON.stringify({inputs:baseInputs,approvedGrants},null,2);
+  document.getElementById('revBadge').textContent=`v${current.revision}`;
+  document.getElementById('raw').textContent=JSON.stringify(current,null,2);
+  document.getElementById('artifact').innerHTML=`<div class="artifactmeta"><span>Checkout</span><strong>${current.id}</strong><span>Actor</span><strong>${current.actor.id}</strong><span>Principal</span><strong>${current.actor.principal}</strong><span>Task</span><strong>${current.task.id}</strong><span>Authority source</span><strong>${current.authority.source}</strong><span>Expires</span><strong>${current.authority.expires}</strong></div><div class="artifactline">${current.projection.resources.map(x=>`<span class="chip">resource · ${x}</span>`).join('')}</div><div class="artifactline">${current.projection.memory.map(x=>`<span class="chip">memory · ${x}</span>`).join('')}</div><div class="artifactline">${current.projection.tools.map(x=>`<span class="chip">tool · ${x}</span>`).join('')}</div><div class="artifactline">${current.authority.capabilities.map(x=>`<span class="chip">authority · ${x}</span>`).join('')}</div><div class="artifactline">${Object.entries(current.effects).map(([k,v])=>`<span class="chip">effect · ${k} → ${v}</span>`).join('')}</div><div class="artifactline">${current.control.pauseBy.map(x=>`<span class="chip">pause · ${x}</span>`).join('')}</div>`;
+  renderDiff();renderTrace()
+}
+function flatten(value,path='',out={}){
+  if(Array.isArray(value)){value.forEach((v,i)=>flatten(v,`${path}[${i}]`,out));if(!value.length)out[path]='[]';return out}
+  if(value&&typeof value==='object'){Object.keys(value).sort().forEach(k=>flatten(value[k],path?`${path}.${k}`:k,out));return out}
+  out[path]=value;return out
+}
+function diffArtifacts(a,b){
+  const A=flatten(a),B=flatten(b),keys=[...new Set([...Object.keys(A),...Object.keys(B)])].sort();
+  return keys.flatMap(k=>{
+    if(!(k in A))return[{type:'plus',text:`+ ${k}: ${JSON.stringify(B[k])}`}];
+    if(!(k in B))return[{type:'minus',text:`- ${k}: ${JSON.stringify(A[k])}`}];
+    if(JSON.stringify(A[k])!==JSON.stringify(B[k]))return[{type:'change',text:`~ ${k}: ${JSON.stringify(A[k])} → ${JSON.stringify(B[k])}`}];
+    return[]
+  })
+}
+function renderDiff(){
+  const changes=diffArtifacts(baseline,current);
+  let html=changes.length?changes.map(x=>`<div class="diffline ${x.type}">${x.text}</div>`).join(''):'<div class="diffline">No artifact differences from baseline.</div>';
+  if(proposalVisible&&!approvedGrants.length)html+=`<div class="diffline approval">pending proposal ${proposal.id}: ${proposal.capability} — not yet part of checkout.json</div>`;
+  document.getElementById('diff').innerHTML=html
+}
+function decision(action,checkout=current){
+  if(checkout.authority.capabilities.includes(action))return'ALLOW';
+  if(Object.prototype.hasOwnProperty.call(checkout.effects,action))return checkout.effects[action];
+  return'NOT_AVAILABLE'
+}
+function renderTrace(){
+  const actions=['quote.read:ACME-2026-17','supplier.history.read:ACME','employee.salary.read','email.external.send','payment.execute','data.export'];
+  document.getElementById('trace').innerHTML=actions.map(a=>{const d=decision(a),cls=d==='ALLOW'?'allow':d==='DENY'?'deny':d==='REQUIRE_APPROVAL'?'approval':'na';return`<div class="traceitem"><span>${a}</span><span class="decision ${cls}">${d}</span></div>`}).join('')
+}
+document.getElementById('v1').onclick=()=>{approvedGrants=[];current=compileCheckout(baseInputs,approvedGrants);proposalVisible=false;render()};
+document.getElementById('propose').onclick=()=>{proposalVisible=true;renderDiff()};
+document.getElementById('v2').onclick=()=>{proposalVisible=true;approvedGrants=[proposal];current=compileCheckout(baseInputs,approvedGrants);render()};
+document.getElementById('showJson').onclick=()=>{const r=document.getElementById('raw');r.style.display=r.style.display==='none'?'block':'none'};
+render();
 </script>
 </body></html>
