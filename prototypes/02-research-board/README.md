@@ -31,9 +31,9 @@ This is a **single-author reading surface**, not a shared room. It has no write
 path by design. If it starts wanting one, that is scope creep back toward
 br-ai-nstorm proper — build there instead.
 
-It is also not the falsifiable experiment. The checkout-diff prototype in
-`prototypes/01-legibility/` remains the thing that can kill or validate the
-project. This board only keeps track of where the project sits.
+It is also not the falsifiable experiment. Executable prototypes 01/01.1, 04 and
+05 carry the architecture claims; Prototype 03 is the adversarial proof room.
+This board only keeps track of where the project sits and what remains weak.
 
 ## Files
 
@@ -43,6 +43,7 @@ board.css                           visual language carried from br-ai-nstorm
 board.js                            rendering only; never writes
 data/landscape.js                   canonical state — the base writable truth
 data/landscape-session-04.js        Purview / Agent 365 correction overlay
+data/landscape-session-05.js        split-projection / trust-boundary overlay
 data/landscape-session-EXAMPLE.js   overlay template
 ```
 
@@ -97,8 +98,10 @@ figures should say so in `status` or `confidence`.
 - Quantitative and publication-facing claims get verified against primary
   sources before their `confidence` rises above `medium`.
 - Findings that weaken this project are valid entries and stay on the board.
+- Project-derived architecture nodes do not become external novelty claims just
+  because they are represented on the board.
 
-Four project-facing tensions now matter especially:
+The current project-facing tensions include:
 
 - `c-aps-overlap` — the Agent Passport System draft may already formalize
   monotonic authority narrowing, including a reversibility dimension that
@@ -111,18 +114,29 @@ Four project-facing tensions now matter especially:
   picture is still unverified.
 - `as-reasoning` — the claim that materialization helps developer reasoning is
   the project's kill criterion and is still untested.
+- `c-projection-trust-collapse` — a single artifact can still be unsafe if it
+  flattens authoritative state and hostile-influenced context into one trust
+  domain.
+- `as-context-cannot-expand` — Prototype 05 enforces the rule locally, but the
+  invariant remains adversarially untested across alternative runtime assembly
+  paths.
 
-The Purview correction is deliberately a **partial contradiction** rather than a
-quiet resolution of `as-legibility`: Microsoft documentation verifies policy
-projection for one control-plane dimension; it does not by itself establish an
-equivalent composed authority artifact across identity, information policy,
-delegation and application semantics.
+The Purview correction remains a **partial contradiction** rather than a quiet
+resolution of `as-legibility`: Microsoft documentation verifies policy projection
+for one control-plane dimension; it does not by itself establish an equivalent
+composed authority artifact across identity, information policy, delegation and
+application semantics.
+
+The split-projection overlay also stays modest: it records a project invariant
+and its failure mode. It does **not** claim that trusted/untrusted separation is
+novel; CaMeL and broader information-flow / capability work are explicit nearby
+prior art.
 
 ## Current state
 
-- 45 nodes
-- 47 relations
-- 18 timeline entries
+- 48 nodes
+- 50 relations
+- 19 timeline entries
 - 6 camps
 
 The D3 map is optional. Offline, it degrades to a note while the canonical state
