@@ -33,9 +33,9 @@ checkout.json
 
 ## Current research question
 
-> **Can one task-scoped derived authority artifact serve both runtime assembly and human reasoning without either consumer relying on parallel hidden authority state?**
+> **Can one task-scoped derived authority artifact serve both runtime assembly and human reasoning without either consumer relying on parallel hidden authority state — and remain honest when upstream state changes?**
 
-Compilation itself is not the contribution. Policy projection already exists in shipped systems. The surviving hypothesis is **single-artifact dual consumption**.
+Compilation itself is not the contribution. Policy projection already exists in shipped systems. The surviving hypothesis is **single-artifact dual consumption**, now extended with an explicit freshness model.
 
 ## Why the project changed
 
@@ -48,7 +48,7 @@ Research found four important corrections:
 
 That leaves a narrower claim worth testing:
 
-> **The same execution-scoped authority artifact is consumed by both the runtime and the human inspector.**
+> **The same execution-scoped authority artifact is consumed by both the runtime and the human inspector, while remaining explicitly derived from fresher upstream control planes.**
 
 ## Core distinctions
 
@@ -63,6 +63,23 @@ SOURCE POLICY ≠ CHECKOUT ≠ EXECUTION TRACE
 - **The checkout is never authoritative.** Upstream control planes and live gates always win.
 
 The UI is only one rendering of the checkout.
+
+## Freshness model
+
+Prototype 04 makes a previously implicit problem explicit. Checkout fields fall into three classes:
+
+```text
+SNAPSHOT_SAFE
+  can be materialized until checkout expiry
+
+LIVE_REFERENCE
+  checkout records the dependency; runtime asks the authoritative source now
+
+INVALIDATING
+  an upstream change makes the checkout untrustworthy for dependent decisions
+```
+
+This is not claimed as novel invalidation machinery. The research question is whether a **human-inspectable dual-consumption artifact** can make these boundaries legible without becoming a stale second source of truth.
 
 ## Agent framing
 
@@ -95,24 +112,6 @@ Authority Checkout
 
 > **Sandbox is how the execution is contained. Checkout is what it was handed.**
 
-## Working checkout manifest
-
-Prototype 01.1 currently compiles a small manifest with:
-
-- actor + principal
-- task + target
-- visible resources
-- projected memory references
-- exposed tools
-- effective capabilities
-- delegation / authority source
-- provenance
-- expiry
-- effect rules / approval requirements
-- pause authority
-
-The exact schema is experimental. Its purpose is not to define a production standard; it is to test whether one artifact can honestly serve two consumers.
-
 ## Prototypes
 
 The root `index.html` is the research index and navigation layer.
@@ -127,11 +126,9 @@ Preserved unchanged. Tests raw policy/configuration versus a human-readable mate
 
 ### Prototype 01.1 — single-artifact dual consumption
 
-Current falsifiable architecture experiment.
-
 `inputs + approved grants → checkout.json → human viewer + runtime evaluator`
 
-Session 06 found that the first implementation violated its own invariant: `sources.policy` was decorative, the runtime hardcoded effect names, and the diff was literal text. Those paths were repaired so source policy now changes the compiled artifact, the runtime generically evaluates the artifact, and the diff is computed artifact-to-artifact.
+Session 06 found that the first implementation violated its own invariant: `sources.policy` was decorative, the runtime hardcoded effect names, and the diff was literal text. Those paths were repaired so source policy changes the compiled artifact, the runtime generically evaluates the artifact, and the diff is computed artifact-to-artifact.
 
 **Kill criterion:** if either consumer still depends on hidden parallel authority state, or the shared artifact adds no reasoning value over the source inputs, the checkout abstraction is cosmetic.
 
@@ -139,33 +136,44 @@ Session 06 found that the first implementation violated its own invariant: `sour
 
 Open `prototypes/02-research-board/index.html`.
 
-A static reading surface for the 2026 agent-authority landscape: incidents, research, industry, standards, governance and this project. It borrows the interaction rule from br-ai-nstorm that **semantic state is canonical and the map/timeline are derived read-only views**. Position on the force-directed map carries no meaning.
-
-The board adds one dimension br-ai-nstorm does not have: `camp`. Fill shows which community a position comes from; ring shows semantic `kind`; every view respects the camp filter.
-
-It is deliberately **not** the experiment. It tracks prior art, evidence, contradictions and unresolved claims around the experiment.
-
-The Purview finding is recorded as an industry contradiction against the broad legibility/projection claim: policy projection is shipped prior art, while the narrower composed dual-consumption artifact remains unverified.
+A static reading surface for the 2026 agent-authority landscape. Semantic state is canonical; map and timeline are read-only projections. The Purview finding is recorded as an industry contradiction against the broad projection claim: policy projection is shipped prior art, while the narrower composed dual-consumption artifact remains unverified.
 
 ### Prototype 03 — Break the Checkout
 
 Open `prototypes/03-break-the-checkout/index.html`.
 
-A project-specific adaptation of the **br-ai-nstorm** participation pattern for adversarial falsification rather than collective ideation.
-
-The room exposes bounded architectural claims and fixtures, exports a structured context package to any person or LLM, accepts a bounded proof package back, and keeps imported evidence in a browser-local review queue.
-
-The rule is explicit:
+A project-specific adaptation of the br-ai-nstorm participation pattern for adversarial falsification.
 
 > **Agents may propose a break. A break only counts after reproducible proof is reviewed.**
 
-The prototype deliberately does **not** provide a real security sandbox or vulnerable infrastructure target. Participants are trying to falsify the model: find undeclared runtime authority, stale authority acceptance, effect-gate bypasses, or evidence that the checkout is only a UI picture rather than the runtime artifact.
+The room now includes **AC-05 — stale-authority trust**, which attacks Prototype 04 directly.
 
-A structurally valid proof package is not canonical truth. Local review does not mutate the Research Board or the repository.
+### Prototype 04 — live authority drift
 
-**Kill criterion:** if adversarial participants mostly return generic critique or non-reproducible claims, do not add backend/MCP infrastructure for this workflow.
+Open `prototypes/04-live-authority-drift/index.html`.
 
-### Prototype 04 — delegation trace
+Adds time and mutable upstream state. The UI shows four simultaneous views:
+
+```text
+SOURCE STATE
+CHECKOUT
+DRIFT
+RUNTIME DECISION
+```
+
+The scenario starts with a valid finance checkout at 11:30, then applies:
+
+- 11:37 — delegation revoked,
+- 11:39 — document reclassified `Internal → Confidential`,
+- 11:46 — checkout expiry passes.
+
+The checkout labels fields as `SNAPSHOT_SAFE`, `LIVE_REFERENCE` or `INVALIDATING`. Once invalidating drift occurs, dependent runtime decisions return `RECOMPILE_REQUIRED` rather than trusting stale compiled values.
+
+**Invariant AD-01:** no runtime decision may rely on stale checkout state when that field is declared live or invalidating.
+
+**Kill criterion:** if developers cannot identify what is stale/live/invalidating, or runtime decisions still trust stale compiled state after an invalidating change, narrow or stop this line.
+
+### Prototype 05 — delegation trace
 
 Conditional horizon. Rather than inventing delegation semantics, ingest an APS/OAuth-shaped chain and compile its effective authority into one execution-specific checkout.
 
@@ -190,7 +198,7 @@ It does **not** claim to:
 
 ### Delta / DeltaDB
 
-The load-bearing analogy: canonical state and working representation are different objects. The analogy only matters here if work actually happens against the materialized representation.
+Canonical state and working representation are different objects. The analogy only matters here if work actually happens against the materialized representation.
 
 ### Memory as middleware
 
@@ -202,7 +210,7 @@ Potential upstream source for delegated authority, narrowing, revocation and act
 
 ### Entra / Purview
 
-Concrete upstream control-plane examples, not things to recreate. Entra demonstrates that agent identity governance is already a product category; Purview demonstrates that AI policy projection and live policy evaluation already ship. A future integration is a credibility upgrade only if the local dual-consumption experiment survives first.
+Concrete upstream control-plane examples, not things to recreate. A future integration is a credibility upgrade only if the local dual-consumption and freshness experiments survive first.
 
 ### br-ai-nstorm
 
@@ -213,24 +221,9 @@ Two patterns are borrowed from the sibling collective-reasoning prototype:
 
 The br-ai-nstorm repository itself stays generic and unchanged.
 
-### AT Protocol
-
-Still a horizon hypothesis, not a dependency. The useful inspiration is separation of stable identity, hosting and signed state. A future checkout might reference portable attestations without publishing sensitive entitlement detail.
-
 ## Learning journey
 
 Open `docs/journey/index.html`.
-
-The journal preserves:
-
-```text
-what I assumed
-what challenged it
-what I learned
-what changed
-what remains open
-verification state
-```
 
 Current modules:
 
@@ -240,6 +233,7 @@ Current modules:
 - `entries-session-04.js` — research-board mapping and explicit unresolved claims
 - `entries-session-05.js` — adversarial proof-room adaptation from br-ai-nstorm
 - `entries-session-06.js` — Prototype 01.1 self-falsification, repair, and dual-consumption reframe
+- `entries-session-07.js` — live authority drift and AC-05
 
 ## Concept history
 
@@ -253,8 +247,8 @@ concept/authority-checkout.v0.5.json   v0.5 — single-artifact dual consumption
 
 ## Current status
 
-**Session 06 — the prototype broke itself, and the claim got narrower.**
+**Session 07 — the artifact now has to survive time.**
 
-Prototype 01.1 now demonstrates the invariant it actually claims: one derived artifact feeds the human view, the diff and the runtime evaluator. Prototype 02 keeps the outside landscape honest. Prototype 03 invites others to try to break the repaired claim with proof.
+Prototype 01.1 tests one artifact with two consumers. Prototype 04 tests whether that artifact stays honest when upstream authority changes. Prototype 03 now has a concrete stale-state invariant to attack.
 
-> **Can one task-scoped authority artifact improve human reasoning while remaining the same object the runtime actually consumes?**
+> **Can one task-scoped authority artifact improve human reasoning, remain the same object the runtime consumes, and clearly signal when it has stopped being trustworthy?**
