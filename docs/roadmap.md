@@ -2,7 +2,7 @@
 
 This repository should grow by adding **evidence**, not by pretending to become production middleware too early.
 
-The original v0.1 → v0.8 ladder was too confident before the abstraction had been validated. The roadmap is now question-driven and every prototype must update the research board and learning journey.
+Every prototype must update the research board, learning journey and project documentation.
 
 ## Current sequence
 
@@ -14,82 +14,45 @@ The original v0.1 → v0.8 ladder was too confident before the abstraction had b
 03    Break the Checkout
 04    live authority drift
 05    split projection / trust boundary
-06    delegation trace — horizon
+06    approval fatigue / effect-gate failure
+07    delegation trace — horizon
 ```
 
-## What has been learned so far
+## What has survived so far
 
-### Legibility alone was not enough
+- Legibility alone was not enough; the runtime and human inspector must consume the same artifact.
+- Compilation alone was not enough; shipped systems already project policy.
+- Dual consumption alone was not enough; Prototype 04 added freshness and invalidation.
+- Freshness alone was not enough; Prototype 05 added trust provenance and `SP-01`.
+- A live human approval step is not automatically a strong control; Prototype 06 adds `EG-01`.
 
-A prettier permissions view already has substantial prior art. The project narrowed to one stronger requirement:
+## Current decisive phase — evidence runs
 
-> the runtime and the human inspector should consume the same execution-scoped authority artifact.
+Do **not** add another conceptual architecture layer immediately.
 
-### Compilation alone was not enough
-
-Shipped systems already compile/project policy for AI applications. Compilation itself is not a novelty claim.
-
-### Dual consumption alone was not enough
-
-Prototype 04 added time: a derived checkout must show what is snapshot-safe, what needs live revalidation, and what upstream changes invalidate the artifact.
-
-### Freshness alone was not enough
-
-Prototype 05 adds trust provenance. A checkout can be consistent and current yet still be unsafe if it flattens authoritative control-plane state and hostile-influenced context into one derivation path.
-
-Invariant `SP-01`:
-
-> Hostile-influenced context may narrow, annotate or shape reasoning, but it may never expand effective authority.
-
-## Next decisive experiment — Approval Fatigue / Effect-Gate Failure
-
-The live effect gate currently assumes that sending a consequential action to a human creates a strong safety boundary.
-
-That assumption should be tested, not inherited.
-
-Minimal experiment:
+Use Break the Checkout to run people and external LLMs against the current executable claims:
 
 ```text
-benign approval requests
-benign approval requests
-ambiguous request
-benign approval requests
-malicious / policy-breaking request
-more benign requests
+01.1  AC-04  one artifact really feeds both consumers
+04    AC-05  stale authority is not trusted
+05    AC-06  hostile context cannot mint authority
+06    AC-07  repeated approvals do not quietly defeat the effect gate
 ```
 
-Measure:
+For Prototype 06, compare repeated control / fatigue / adversarial runs and record:
 
-- correct approvals / rejections
-- false approvals
-- time per decision
-- confidence
-- position-in-sequence effect
-- performance as approval volume rises
+- prohibited-effect approval rate,
+- benign rejection rate,
+- response time,
+- sequence position,
+- checkout-inspection count,
+- reviewer / run provenance.
 
-Primary question:
-
-> Does a human approval gate remain a meaningful safety boundary as benign approval volume and ambiguity increase?
-
-Kill / change criterion:
-
-> If reviewer accuracy degrades materially under realistic approval volume, human approval cannot be treated as the default answer for consequential effects. The architecture should determinize more decisions and reserve human review for genuine ambiguity.
-
-## Near-term adversarial work
-
-Break the Checkout should evolve with every architecture prototype rather than as a separate later phase.
-
-Current high-value challenges:
-
-- `AC-04` — prove runtime and human view consume different state
-- `AC-05` — make runtime trust stale authority
-- `AC-06` — make hostile-influenced context mint authority
-
-Successful breaks should become regression fixtures or explicit reasons to change the concept.
+One run is not evidence. The goal is not statistical publication yet; it is to see whether the architectural assumption is obviously fragile enough to require redesign.
 
 ## Blocking architecture decision — APS
 
-Before building delegation semantics, read the Agent Passport System draft deeply enough to decide explicitly:
+Before building delegation trace, resolve explicitly:
 
 ```text
 Authority Checkout as a view/runtime artifact over APS-style delegation
@@ -97,57 +60,21 @@ vs.
 Authority Checkout as a competing delegation model
 ```
 
-The default direction should be to consume upstream identity/delegation semantics rather than reinvent them, but this remains an explicit research decision until verified.
+Default direction: consume upstream identity/delegation semantics rather than reinvent them, but verify against the draft before promoting that position.
 
-## Conditional experiments
+## Conditional experiments after evidence
 
 ### Delegation trace
-
-Ingest an APS/OAuth-shaped delegation chain and materialize:
-
-- originating authority
-- inherited authority
-- monotonic narrowing / expansion attempts
-- expiry and revocation
-- final effect
-- attribution and provenance
-
-Question:
-
-> Does one materialized authority artifact make a delegation chain easier to understand than isolated authorization logs without replacing the upstream protocol?
+Ingest an APS/OAuth-shaped chain only after the positioning decision is resolved.
 
 ### Reconnaissance inversion
-
-Treat the checkout itself as an attacker aid and test whether compact authority legibility materially improves target selection.
-
-If it does, checkout visibility and redaction become part of the authority model.
+Test whether compact authority legibility materially improves attacker target selection. If it does, checkout visibility/redaction becomes part of the model.
 
 ### One real adapter
+After the local claims survive, connect one low-risk real source such as Purview-style policy projection, Entra entitlement facts, an APS-shaped fixture or a temporary GitHub/filesystem adapter. The purpose is to measure distance between artifact and runtime, not integration breadth.
 
-Only after the local architecture survives, connect one low-risk real control-plane source or test environment.
-
-Possible directions:
-
-- real Purview-style policy projection as a credibility input
-- Entra/identity entitlement facts
-- APS-shaped delegation fixture
-- temporary GitHub/filesystem resource adapter
-
-The purpose is to test **distance between artifact and runtime**, not to claim integration breadth.
-
-### Optional LLM run
-
-After deterministic sequences are understood, run the same scenario with an LLM and separately record:
-
-- what the model tried
-- what context influenced it
-- what authority the checkout exposed
-- what the live effect gate permitted
-- what actually executed
-
-The model is an experimental subject, not the enforcement boundary.
-
----
+### Optional LLM execution run
+Only after deterministic sequences are understood, record separately what the model tried, what context influenced it, what authority the checkout exposed, what the live gate permitted and what actually executed.
 
 ## Rule for every experiment
 
@@ -163,18 +90,4 @@ concept version when the architecture changes materially
 Break the Checkout when a new falsifiable invariant appears
 ```
 
-Every experiment should preserve:
-
-```text
-what I assumed
-what challenged it
-what I learned
-what changed
-what remains open
-source / provenance
-verification state
-```
-
-A critique from another LLM is an **input**, not automatically a fact. Quantitative or publication-facing claims should be verified against primary sources where possible.
-
-A result that weakens or kills the idea is a valid project result.
+A critique from another LLM is an **input**, not automatically a fact. A result that weakens or kills the idea is a valid result.
