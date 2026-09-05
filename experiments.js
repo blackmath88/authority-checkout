@@ -41,7 +41,7 @@ window.AUTHORITY_CHECKOUT_EXPERIMENTS = [
     href: "./prototypes/02-research-board/index.html",
     date: "2026-09-05",
     tags: ["research", "prior-art", "landscape", "br-ai-nstorm"],
-    killCriterion: "None. This board does not validate the project; it must preserve findings that weaken it and keep Prototype 01 / 01.1 as the falsifiable experiment."
+    killCriterion: "None. This board does not validate the project; it must preserve findings that weaken it and keep the executable prototypes as the falsifiable work."
   },
   {
     id: "03",
@@ -67,6 +67,17 @@ window.AUTHORITY_CHECKOUT_EXPERIMENTS = [
   },
   {
     id: "05",
+    title: "Split projection / trust boundary",
+    status: "working",
+    question: "Can hostile-influenced context shape reasoning without ever expanding effective authority?",
+    description: "Separates authoritative control-plane inputs from mixed-trust task, memory, retrieval and tool-output context before compiling one checkout. The artifact preserves trust provenance instead of flattening authority and reasoning context into one channel.",
+    href: "./prototypes/05-split-projection/index.html",
+    date: "2026-09-05",
+    tags: ["trust-boundary", "projection", "prompt-injection", "provenance", "dual-consumption"],
+    killCriterion: "If mixed-trust context can add capabilities, or the split is merely visual while runtime assembly derives authority from context elsewhere, the prototype fails."
+  },
+  {
+    id: "06",
     title: "Delegation trace",
     status: "horizon",
     question: "Can an upstream delegation protocol or authority chain be compiled into one execution-specific checkout without losing provenance or narrowing semantics?",
