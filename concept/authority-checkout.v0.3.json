@@ -1,0 +1,183 @@
+{
+  "schema": "authority-checkout/project-concept/v0.3",
+  "project": {
+    "name": "Authority Checkout",
+    "repo": "authority-checkout",
+    "status": "exploratory",
+    "supersedes": "authority-checkout/project-concept/v0.2",
+    "type": [
+      "reference architecture",
+      "research prototype",
+      "legibility experiment"
+    ],
+    "tagline": "Make agent authority inspectable."
+  },
+  "lineage": {
+    "unifying_move": "The actor works against a materialized runtime projection rather than canonical state.",
+    "domains": [
+      {
+        "domain": "memory",
+        "lesson": "Persistent memory is system state projected into an execution rather than intrinsically owned by an agent."
+      },
+      {
+        "domain": "authority",
+        "lesson": "Effective runtime authority can likewise be materialized as a task-scoped view rather than treated as ambient property of the host environment."
+      }
+    ],
+    "delta_inspiration": "A familiar working representation can remain useful while being demoted from source of truth to a materialized view."
+  },
+  "framing": {
+    "actor": "An agent is treated as an LLM-powered software module, not as an autonomous employee metaphor.",
+    "ambient_authority_analogy": "Ambient authority is analogous to implicit global dependency: power available because of the execution environment rather than explicitly passed for the task.",
+    "sandbox_relationship": {
+      "isolation": "Where may this code run?",
+      "checkout": "What state and capability was this execution handed?",
+      "thesis": "Sandbox is how the execution is contained. Checkout is what it was handed."
+    }
+  },
+  "research_question": "Can developers reason about an agent's effective authority more reliably when that authority is materialized as an inspectable, diffable object?",
+  "kill_criterion": "If a materialized checkout tells developers nothing useful beyond the underlying policy and entitlement configuration, the project is only a visualization layer and should be narrowed or stopped.",
+  "not_claimed": [
+    "This solves prompt injection.",
+    "This automatically derives perfect least privilege.",
+    "This is a new security primitive.",
+    "This replaces IAM, capability systems, policy engines, sandboxes or reference monitors.",
+    "This introduces novel out-of-model enforcement.",
+    "This can literally snapshot external reality.",
+    "This prevents infrastructure-level sandbox escape.",
+    "This remains authoritative after the enforcement layer itself is compromised.",
+    "This would have prevented the July 2026 OpenAI/Hugging Face incident.",
+    "This makes autonomous agents safe."
+  ],
+  "core_model": {
+    "canonical_substrate": {
+      "description": "Authoritative state outside the model.",
+      "dimensions": [
+        "application data",
+        "memory",
+        "identity",
+        "policy",
+        "capabilities",
+        "relationships",
+        "provenance"
+      ]
+    },
+    "runtime_projection": {
+      "alias": "authority checkout",
+      "description": "The inspectable, task-scoped materialization handed to an execution.",
+      "properties": [
+        "inspectable",
+        "diffable",
+        "versionable",
+        "revocable",
+        "attributable",
+        "time-scoped"
+      ],
+      "dimensions": [
+        "actor identity",
+        "delegation context",
+        "task",
+        "visible resources",
+        "projected memory",
+        "available tools",
+        "attemptable capabilities",
+        "provenance",
+        "expiry",
+        "pause control metadata"
+      ]
+    },
+    "effect_gate": {
+      "description": "Live authorization for consequential effects.",
+      "properties": [
+        "evaluated at execution",
+        "not represented as a merge",
+        "no assumed rollback"
+      ],
+      "examples": [
+        "send",
+        "publish",
+        "purchase",
+        "transfer",
+        "delete",
+        "payment.execute"
+      ],
+      "outcomes": [
+        "ALLOW",
+        "DENY",
+        "REQUIRE_APPROVAL",
+        "NOT_AVAILABLE"
+      ]
+    },
+    "pause_authority": {
+      "description": "Who may halt, suspend, revoke or restart the execution, through which control path.",
+      "status": "open design question"
+    },
+    "proposal_loop": {
+      "description": "When an execution discovers that it lacks authority required for the task, that discovery becomes a governed proposal rather than implicit privilege growth.",
+      "tiers": [
+        "ephemeral request",
+        "proposal",
+        "governed release"
+      ]
+    },
+    "delegation": {
+      "description": "Authority propagation and attribution across actor-to-actor and actor-to-tool chains.",
+      "status": "early research candidate"
+    }
+  },
+  "first_prototype": {
+    "goal": "Test whether the materialized view adds legibility beyond policy configuration.",
+    "form": "single-page local browser prototype",
+    "implementation": {
+      "canonical_state": "local JSON fixtures",
+      "policy": "small deterministic TypeScript/JavaScript evaluator",
+      "agent": "hardcoded attempted-action sequence first; optional LLM later",
+      "external_effects": "simulated only"
+    },
+    "scenario": "procurement agent comparing one supplier quote",
+    "views": [
+      "policy/config input",
+      "materialized checkout",
+      "checkout diff between revisions",
+      "attempted action transcript",
+      "effect decisions",
+      "provenance / expiry / delegation / pause metadata"
+    ],
+    "test_questions": [
+      "Can this agent read this resource?",
+      "Can it attempt this capability?",
+      "Can it perform this consequential effect right now?",
+      "Why does it have this authority?",
+      "When does it expire?",
+      "What changed since the previous checkout?",
+      "Who delegated it?",
+      "Who can pause it?"
+    ],
+    "comparison": "Ask the same questions using policy/config alone versus the materialized checkout and compare correctness, time and confidence."
+  },
+  "incident_boundary": {
+    "july_2026_openai_hugging_face": {
+      "escape_stage": "Outside project scope: infrastructure sandbox escape and privilege compromise.",
+      "post_escape_lesson": "The incident illustrates how ambiently reachable credentials and capabilities can amplify a containment failure. The project may explore reducing first-hop ambient authority before compromise, but does not claim protection after the enforcement layer is compromised."
+    }
+  },
+  "horizon_hypotheses": {
+    "runtime_projection_architecture": "Memory projection and authority projection may be slices of a broader application architecture, but this is not yet a separate project.",
+    "atproto": {
+      "status": "research only; exclude from first prototype",
+      "possible_relevance": [
+        "stable actor identifiers",
+        "identity separated from hosting",
+        "portable ownership of records",
+        "signed and attributable authority artifacts",
+        "delegation or audit records that survive service boundaries"
+      ],
+      "not_relevance": [
+        "authorization enforcement",
+        "sandboxing",
+        "automatic least privilege"
+      ],
+      "research_question": "Would portable stable identity plus signed records make authority checkout, delegation and audit artifacts more trustworthy or interoperable across independently operated agent infrastructure?"
+    }
+  }
+}
