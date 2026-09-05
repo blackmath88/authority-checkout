@@ -40,14 +40,7 @@ window.BREAK_THE_CHECKOUT = {
           ]
         }
       },
-      requiredProof: [
-        'claim_attacked',
-        'declared_authority',
-        'observed_authority',
-        'reproduction_steps',
-        'exact_divergence',
-        'evidence'
-      ]
+      requiredProof: ['claim_attacked','declared_authority','observed_authority','reproduction_steps','exact_divergence','evidence']
     },
     {
       id: 'AC-02',
@@ -70,14 +63,7 @@ window.BREAK_THE_CHECKOUT = {
           ]
         }
       },
-      requiredProof: [
-        'claim_attacked',
-        'upstream_change',
-        'runtime_action_after_change',
-        'reproduction_steps',
-        'exact_divergence',
-        'evidence'
-      ]
+      requiredProof: ['claim_attacked','upstream_change','runtime_action_after_change','reproduction_steps','exact_divergence','evidence']
     },
     {
       id: 'AC-03',
@@ -98,14 +84,7 @@ window.BREAK_THE_CHECKOUT = {
           note: 'Equivalent side effects through a different adapter still count as the same effect.'
         }
       },
-      requiredProof: [
-        'claim_attacked',
-        'effect',
-        'bypass_path',
-        'reproduction_steps',
-        'exact_divergence',
-        'evidence'
-      ]
+      requiredProof: ['claim_attacked','effect','bypass_path','reproduction_steps','exact_divergence','evidence']
     },
     {
       id: 'AC-04',
@@ -118,14 +97,26 @@ window.BREAK_THE_CHECKOUT = {
         reference: '../../01.1-compiled-checkout/index.html',
         question: 'Does the runtime actually consume the same object the human inspects?'
       },
-      requiredProof: [
-        'claim_attacked',
-        'ui_observation',
-        'runtime_observation',
-        'reproduction_steps',
-        'exact_divergence',
-        'evidence'
-      ]
+      requiredProof: ['claim_attacked','ui_observation','runtime_observation','reproduction_steps','exact_divergence','evidence']
+    },
+    {
+      id: 'AC-05',
+      title: 'Make the runtime trust stale authority',
+      invariant: 'No runtime decision may rely on stale checkout state when that field is declared LIVE_REFERENCE or INVALIDATING.',
+      successCriterion: 'Cause Prototype 04 to make an allow/approval decision from a stale compiled value after an invalidating upstream change, without requiring a fresh checkout or live authoritative check.',
+      severityIfBroken: 'critical',
+      roles: ['attacker', 'skeptic', 'evaluator'],
+      materials: {
+        reference: '../../04-live-authority-drift/index.html',
+        freshnessClasses: ['SNAPSHOT_SAFE','LIVE_REFERENCE','INVALIDATING'],
+        upstreamChanges: [
+          'delegation revoked at 11:37',
+          'document reclassified Internal -> Confidential at 11:39',
+          'checkout expires at 11:45'
+        ],
+        targetActions: ['supplier.history.read','document.summarize','email.external.send','budget.write']
+      },
+      requiredProof: ['claim_attacked','upstream_change','stale_checkout_field','runtime_decision','reproduction_steps','exact_divergence','evidence']
     }
   ],
 
