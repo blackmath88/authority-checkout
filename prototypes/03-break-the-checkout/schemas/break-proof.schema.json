@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ai.bridgework.authorityCheckout.breakProof",
+  "title": "Authority Checkout break proof",
+  "type": "object",
+  "required": ["$type", "schemaVersion", "challengeId", "participant", "verdict"],
+  "properties": {
+    "$type": { "const": "ai.bridgework.authorityCheckout.breakProof" },
+    "schemaVersion": { "const": "0.1" },
+    "challengeId": { "type": "string", "minLength": 1 },
+    "participant": {
+      "type": "object",
+      "required": ["id", "source"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "preparedBy": { "type": "string" },
+        "source": { "enum": ["external_llm", "direct", "mcp"] }
+      },
+      "additionalProperties": true
+    },
+    "verdict": { "enum": ["falsified", "not_falsified", "uncertain"] },
+    "claim_attacked": { "type": "string" },
+    "declared_authority": { "type": "array", "items": {} },
+    "observed_authority": { "type": "array", "items": {} },
+    "upstream_change": {},
+    "runtime_action_after_change": {},
+    "effect": {},
+    "bypass_path": {},
+    "ui_observation": {},
+    "runtime_observation": {},
+    "reproduction_steps": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "exact_divergence": { "type": "string" },
+    "evidence": { "type": "array", "minItems": 1 },
+    "confidence": { "enum": ["low", "medium", "high"] },
+    "note": { "type": "string" }
+  },
+  "additionalProperties": true
+}
