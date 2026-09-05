@@ -34,6 +34,17 @@ window.AUTHORITY_CHECKOUT_EXPERIMENTS = [
   },
   {
     id: "02",
+    title: "Authority research board",
+    status: "reading surface",
+    question: "Where does Authority Checkout actually differ from the 2026 agent-authority landscape, and which of its own claims remain weak?",
+    description: "Static, no-build research board mapping incidents, research, industry, standards, governance and this project. Semantic state is canonical; map and timeline are read-only projections. Camp filtering keeps the landscape from collapsing into one undifferentiated cloud.",
+    href: "./prototypes/02-research-board/index.html",
+    date: "2026-09-05",
+    tags: ["research", "prior-art", "landscape", "br-ai-nstorm"],
+    killCriterion: "None. This board does not validate the project; it must preserve findings that weaken it and keep Prototype 01 / 01.1 as the falsifiable experiment."
+  },
+  {
+    id: "03",
     title: "Delegation trace",
     status: "horizon",
     question: "Can an upstream delegation protocol or authority chain be compiled into one execution-specific checkout without losing provenance or narrowing semantics?",
