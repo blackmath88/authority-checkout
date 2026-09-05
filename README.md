@@ -1,12 +1,12 @@
 # Authority Checkout
 
-> **Compile the agent's working authority into an inspectable runtime artifact.**
+> **One task-scoped authority artifact for runtime assembly and human inspection.**
 
-Authority Checkout is an exploratory research project about **runtime projection for agentic software**.
+Authority Checkout is an exploratory research project about **runtime projection and authority legibility for agentic software**.
 
 The architectural move is simple:
 
-> **The representation an actor works against does not need to be canonical state.**
+> **The representation an actor works against does not need to be canonical state — but the runtime and the human inspector should not get different representations of authority.**
 
 That idea came first from the companion memory work and from Delta / DeltaDB: a working representation can stay useful while the real source of truth lives deeper in the system.
 
@@ -22,32 +22,33 @@ source systems
   tool registry
       │
       ▼
-compileCheckout()
+compile / project
       │
       ▼
 checkout.json
       │
-      ├── human viewer
+      ├── human inspection
       └── runtime assembly / effect evaluation
 ```
 
 ## Current research question
 
-> **Can one task-scoped compiled artifact serve both runtime assembly and human reasoning about effective agent authority without duplicating or weakening the underlying identity, policy and enforcement systems?**
+> **Can one task-scoped derived authority artifact serve both runtime assembly and human reasoning without either consumer relying on parallel hidden authority state?**
 
-This is no longer primarily a permissions-dashboard experiment.
+Compilation itself is not the contribution. Policy projection already exists in shipped systems. The surviving hypothesis is **single-artifact dual consumption**.
 
 ## Why the project changed
 
-Research found three important corrections:
+Research found four important corrections:
 
 1. **Pre-execution deterministic control is established prior art.** Authority Checkout should not claim it.
 2. **Human-readable authority views already exist.** Effective-access dashboards, delegation graphs, revocation controls and authority visualizations are not novel on their own.
 3. **Delegation protocols are getting much more formal.** The Agent Passport System (APS) draft is a close neighbour and should be treated as possible upstream authority input, not reinvented here.
+4. **Compiled policy projections already ship.** Microsoft Purview is a concrete example. Authority Checkout therefore cannot center novelty on compilation or projection alone.
 
-That leaves a stronger version of the original Delta-inspired idea:
+That leaves a narrower claim worth testing:
 
-> **The checkout should be the actual compiled execution manifest, not just a picture of policy.**
+> **The same execution-scoped authority artifact is consumed by both the runtime and the human inspector.**
 
 ## Core distinctions
 
@@ -59,6 +60,7 @@ SOURCE POLICY ≠ CHECKOUT ≠ EXECUTION TRACE
 - **Checkout** is derived, task-scoped, versioned and disposable.
 - **Execution trace / receipts** record what later happened.
 - **Live effect gates** may revalidate consequential actions at execution time.
+- **The checkout is never authoritative.** Upstream control planes and live gates always win.
 
 The UI is only one rendering of the checkout.
 
@@ -95,7 +97,7 @@ Authority Checkout
 
 ## Working checkout manifest
 
-Prototype 01.1 compiles a manifest with:
+Prototype 01.1 currently compiles a small manifest with:
 
 - actor + principal
 - task + target
@@ -109,7 +111,7 @@ Prototype 01.1 compiles a manifest with:
 - effect rules / approval requirements
 - pause authority
 
-The exact schema is experimental.
+The exact schema is experimental. Its purpose is not to define a production standard; it is to test whether one artifact can honestly serve two consumers.
 
 ## Prototypes
 
@@ -117,21 +119,21 @@ The root `index.html` is the research index and navigation layer.
 
 ### Prototype 00 — static boundary simulator
 
-Historical baseline. Made the metaphor interactive.
+Historical baseline. Made the metaphor interactive. Preserved deliberately as the pre-legibility version.
 
 ### Prototype 01 — authority legibility test
 
 Preserved unchanged. Tests raw policy/configuration versus a human-readable materialized checkout, including revisions, diffs and effect decisions.
 
-### Prototype 01.1 — compiled runtime checkout
+### Prototype 01.1 — single-artifact dual consumption
 
-Current falsifiable experiment.
+Current falsifiable architecture experiment.
 
-`policy + task + delegation + control → compileCheckout() → checkout.json`
+`inputs + approved grants → checkout.json → human viewer + runtime evaluator`
 
-The human view, checkout diff and simulated runtime evaluator all consume that same artifact.
+Session 06 found that the first implementation violated its own invariant: `sources.policy` was decorative, the runtime hardcoded effect names, and the diff was literal text. Those paths were repaired so source policy now changes the compiled artifact, the runtime generically evaluates the artifact, and the diff is computed artifact-to-artifact.
 
-**Kill criterion:** if the artifact is not useful to both runtime assembly and human inspection, the checkout abstraction is still cosmetic.
+**Kill criterion:** if either consumer still depends on hidden parallel authority state, or the shared artifact adds no reasoning value over the source inputs, the checkout abstraction is cosmetic.
 
 ### Prototype 02 — authority research board
 
@@ -143,13 +145,7 @@ The board adds one dimension br-ai-nstorm does not have: `camp`. Fill shows whic
 
 It is deliberately **not** the experiment. It tracks prior art, evidence, contradictions and unresolved claims around the experiment.
 
-Current board state: **44 nodes, 46 relations, 17 timeline entries**.
-
-Three project-facing claims stay unresolved on purpose:
-
-- `c-aps-overlap` — APS may already formalize part of the projection/effect-gate split.
-- `as-legibility` — the claimed legibility gap is not yet verified.
-- `as-reasoning` — whether materialization actually helps developer reasoning remains the kill criterion.
+The Purview finding is recorded as an industry contradiction against the broad legibility/projection claim: policy projection is shipped prior art, while the narrower composed dual-consumption artifact remains unverified.
 
 ### Prototype 03 — Break the Checkout
 
@@ -183,6 +179,8 @@ It does **not** claim to:
 - invent deterministic out-of-model enforcement
 - invent delegation protocols
 - introduce novel authority dashboards or graphs
+- introduce novel compiled policy projection
+- solve staleness invalidation in general
 - literally snapshot all external reality
 - prevent infrastructure-level sandbox escape
 - remain authoritative after its enforcement layer is compromised
@@ -192,7 +190,7 @@ It does **not** claim to:
 
 ### Delta / DeltaDB
 
-The load-bearing analogy: canonical state and working representation are different objects. The analogy only matters here if the checkout is actually consumed by execution.
+The load-bearing analogy: canonical state and working representation are different objects. The analogy only matters here if work actually happens against the materialized representation.
 
 ### Memory as middleware
 
@@ -201,6 +199,10 @@ Persistent memory is system state that can be projected into execution rather th
 ### Agent Passport System
 
 Potential upstream source for delegated authority, narrowing, revocation and action-policy receipts. Authority Checkout should compile or reference these facts rather than replace the protocol.
+
+### Entra / Purview
+
+Concrete upstream control-plane examples, not things to recreate. Entra demonstrates that agent identity governance is already a product category; Purview demonstrates that AI policy projection and live policy evaluation already ship. A future integration is a credibility upgrade only if the local dual-consumption experiment survives first.
 
 ### br-ai-nstorm
 
@@ -237,6 +239,7 @@ Current modules:
 - `entries-session-03.js` — APS, existing authority dashboards, compiled-runtime reframe
 - `entries-session-04.js` — research-board mapping and explicit unresolved claims
 - `entries-session-05.js` — adversarial proof-room adaptation from br-ai-nstorm
+- `entries-session-06.js` — Prototype 01.1 self-falsification, repair, and dual-consumption reframe
 
 ## Concept history
 
@@ -245,12 +248,13 @@ concept/authority-checkout.json        v0.1 — original authority-checkout idea
 concept/authority-checkout.v0.2.json   v0.2 — legibility reframe
 concept/authority-checkout.v0.3.json   v0.3 — architecture lineage / runtime projection
 concept/authority-checkout.v0.4.json   v0.4 — compiled runtime manifest
+concept/authority-checkout.v0.5.json   v0.5 — single-artifact dual consumption
 ```
 
 ## Current status
 
-**Session 05 — the project can now be attacked, not just demonstrated**
+**Session 06 — the prototype broke itself, and the claim got narrower.**
 
-Prototype 01 / 01.1 remains the core falsifiable architecture experiment. Prototype 02 tracks the outside landscape. Prototype 03 opens a bounded participation aperture so independent agents and people can try to produce evidence that the architecture is wrong.
+Prototype 01.1 now demonstrates the invariant it actually claims: one derived artifact feeds the human view, the diff and the runtime evaluator. Prototype 02 keeps the outside landscape honest. Prototype 03 invites others to try to break the repaired claim with proof.
 
-> **Can `checkout.json` become a real execution boundary artifact that improves human reasoning without quietly recreating ambient authority underneath it — and can adversarial reviewers prove when it fails?**
+> **Can one task-scoped authority artifact improve human reasoning while remaining the same object the runtime actually consumes?**
