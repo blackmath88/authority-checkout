@@ -1,0 +1,76 @@
+{
+  "schema": "authority-checkout/project-concept/v0.4",
+  "project": {
+    "name": "Authority Checkout",
+    "status": "exploratory",
+    "supersedes": "authority-checkout/project-concept/v0.3",
+    "type": ["runtime projection experiment", "reference architecture", "legibility research"],
+    "tagline": "Compile the agent's working authority into an inspectable runtime artifact."
+  },
+  "reframe": {
+    "previous_center": "effective-authority legibility",
+    "current_center": "compiled runtime projection",
+    "reason": "Research found that authority dashboards, effective-access views, delegation graphs and revocation consoles already exist. A checkout only adds a distinct architectural claim if it is the artifact from which an execution is assembled, while remaining inspectable by humans.",
+    "research_question": "Can one task-scoped compiled artifact serve both runtime assembly and human reasoning about effective agent authority without duplicating or weakening the underlying identity, policy and enforcement systems?",
+    "kill_criterion": "If the checkout is useful only as a visualization, or if runtime assembly still depends on separate hidden authority state, the Delta-style checkout analogy is cosmetic and the project should narrow or stop."
+  },
+  "core_claim": {
+    "statement": "An Authority Checkout is a compiled, task-scoped runtime manifest describing the state and authority materialized for one execution.",
+    "distinctions": [
+      "source policy is not the checkout",
+      "the checkout is not the canonical source of identity or authorization truth",
+      "the checkout is not the execution log",
+      "the UI is only one rendering of the checkout",
+      "live effect authorization may revalidate state that cannot safely be snapshotted"
+    ]
+  },
+  "compile_inputs": [
+    "actor identity",
+    "principal / sponsor",
+    "task and intent",
+    "IAM / entitlement facts",
+    "delegation chain",
+    "policy version",
+    "resource bindings",
+    "memory projection policy",
+    "tool registry",
+    "expiry / freshness rules",
+    "pause / revocation path"
+  ],
+  "checkout_manifest": {
+    "identity": ["actor", "principal", "delegation context"],
+    "task": ["task id", "target resources", "intent reference"],
+    "projection": ["visible resources", "projected memory", "exposed tools"],
+    "authority": ["effective capabilities", "authority source", "provenance", "expiry"],
+    "effects": ["live effect decisions or ceilings", "approval requirements", "reversibility hints"],
+    "control": ["pause authority", "revocation references", "restart authority"]
+  },
+  "runtime_rule": "The simulated runtime and the human viewer must consume the same checkout artifact. Parallel hardcoded permission state is considered architectural drift.",
+  "upstream_relationships": {
+    "Delta": "Inspiration for canonical state versus materialized working representation.",
+    "APS": "Potential upstream source for identity, delegation, monotonic narrowing, revocation and action-policy receipts. Authority Checkout should not reinvent APS protocol semantics.",
+    "OAuth_IAM": "Potential upstream source for principal, delegated identity and entitlement facts.",
+    "Cedar_OPA": "Potential upstream policy evaluators. The checkout may materialize their effective result for one execution.",
+    "ATProto": "Horizon hypothesis for portable identity, signed attestations or independently hosted authority references. Not part of Prototype 01.1."
+  },
+  "prototype_01_1": {
+    "path": "prototypes/01.1-compiled-checkout/index.html",
+    "input": "local policy, task, delegation and control objects",
+    "compiler": "compileCheckout()",
+    "output_schema": "authority-checkout/runtime-manifest/v0.1",
+    "consumers": ["human viewer", "checkout diff", "simulated runtime effect evaluator"],
+    "versions": ["v1 baseline", "v2 after approved authority proposal"],
+    "not_implemented": ["real credential brokering", "real IAM", "real sandboxing", "real APS", "real LLM", "production enforcement"]
+  },
+  "prior_art_correction": {
+    "finding": "Human-readable agent authority views and graphs already exist in products and experimental systems.",
+    "consequence": "Do not claim novelty for visualizing effective access, delegation or revocation. The project must differentiate on the compiled execution artifact and the relationship between canonical systems, runtime materialization and governed effects."
+  },
+  "next_questions": [
+    "Can Prototype 01.1 remove all parallel authority state and truly render decisions only from checkout.json?",
+    "Which fields belong in a checkout versus being live references to upstream systems?",
+    "Can an APS-shaped delegation chain compile cleanly into one execution-specific checkout?",
+    "Can checkout diffs remain meaningful when live revocation and policy state change underneath them?",
+    "Does memory projection belong in the same manifest or only as a referenced sub-projection?"
+  ]
+}
