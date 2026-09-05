@@ -13,11 +13,11 @@ window.AUTHORITY_CHECKOUT_EXPERIMENTS = [
   {
     id: "01",
     title: "Authority legibility test",
-    status: "next",
+    status: "working",
     question: "Can developers reason about effective agent authority more reliably from a materialized checkout than from policy/configuration alone?",
-    description: "The first decisive experiment: raw policy/input beside the resulting Authority Checkout, checkout revisions and diffs, action/effect trace, expiry, provenance, delegation context and pause authority. No LLM initially.",
-    href: null,
-    date: "planned",
+    description: "The first decisive experiment: raw policy/input beside the resulting Authority Checkout, checkout revisions and diffs, action/effect trace, expiry, provenance and pause authority. The agent sequence is deterministic so the representation can be tested without LLM variability.",
+    href: "./prototypes/01-legibility/index.html",
+    date: "2026-09-05",
     tags: ["legibility", "diff", "falsification"],
     killCriterion: "If the checkout tells a developer nothing useful beyond the underlying policy/configuration, narrow or stop the project."
   },
