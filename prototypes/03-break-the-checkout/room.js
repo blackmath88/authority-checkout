@@ -11,8 +11,8 @@
   }
 
   function esc (s) {
-    return String(s == null ? '' : s).replace(/[&<>\"]/g, function (c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;' }[c]
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]
     })
   }
 
@@ -222,6 +222,11 @@
 
     if (e.target.closest('#copy-context')) {
       var text = JSON.stringify(buildContextPackage(selectedChallenge()), null, 2)
+      if (!navigator.clipboard || !navigator.clipboard.writeText) {
+        state.message = { kind: 'warn', text: 'Clipboard API unavailable. Copy the context JSON manually.' }
+        render()
+        return
+      }
       navigator.clipboard.writeText(text).then(function () {
         state.message = { kind: 'good', text: 'Context package copied.' }; render()
       }).catch(function () {
