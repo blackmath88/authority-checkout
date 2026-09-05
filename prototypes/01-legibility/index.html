@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Authority Checkout — Prototype 01</title>
+<style>
+  :root{--bg:#0d0e10;--panel:#131417;--panel2:#17191d;--ink:#f2f2ef;--muted:#8e918b;--line:#2b2e33;--good:#dcebdc;--warn:#eadfbe;--bad:#ead0d0;--accent:#f2f2ef}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  a{color:inherit}.wrap{width:min(1440px,calc(100% - 28px));margin:auto}.top{padding:28px 0 22px;border-bottom:1px solid var(--line)}
+  .topline{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}.eyebrow{font:600 11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  h1{margin:8px 0 10px;font-size:clamp(34px,5vw,68px);line-height:.95;letter-spacing:-.05em}.lede{margin:0;max-width:850px;color:#b9bbb6;line-height:1.55}
+  .back{font-size:12px;text-decoration:none;border:1px solid var(--line);padding:9px 11px;white-space:nowrap}.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+  button{border:1px solid var(--line);background:#17191c;color:var(--ink);padding:9px 12px;cursor:pointer;font:600 12px/1 system-ui}button.active,button:hover{background:var(--ink);color:#111}
+  main{padding:18px 0 56px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.panel{border:1px solid var(--line);background:var(--panel);min-width:0}.head{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
+  .head h2{margin:0;font-size:12px;letter-spacing:.08em;text-transform:uppercase}.badge{font:600 10px/1 ui-monospace,monospace;border:1px solid var(--line);padding:5px 7px;color:var(--muted)}.body{padding:14px}.code{white-space:pre-wrap;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;color:#c8cac4;margin:0;overflow:auto}
+  dl{display:grid;grid-template-columns:130px 1fr;gap:8px 14px;margin:0;font-size:13px}dt{color:var(--muted)}dd{margin:0}.section{margin-top:20px}.section h3{margin:0 0 9px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}.chip{border:1px solid #34383f;background:#1a1d21;padding:6px 8px;font:11px/1.2 ui-monospace,monospace}.rowwide{grid-column:1/-1}.diff{display:grid;grid-template-columns:1fr 1fr;gap:12px}.diffcol{border:1px solid var(--line);background:#111316;padding:12px}.diffline{font:12px/1.6 ui-monospace,monospace}.plus{color:#b9dfb9}.minus{color:#e0b2b2}.same{color:#777b75}.proposal{margin-top:12px;border-left:3px solid #777b75;background:#17191d;padding:12px}.proposal strong{display:block;margin-bottom:6px;font-size:13px}.proposal p{margin:0;color:#b5b7b1;font-size:13px;line-height:1.5}
+  .trace{display:grid;gap:8px}.traceitem{display:grid;grid-template-columns:1fr 135px;gap:10px;align-items:center;border-bottom:1px solid #25282d;padding:9px 0;font-size:13px}.decision{text-align:right;font:700 11px/1 ui-monospace,monospace;letter-spacing:.05em}.allow{color:#b9dfb9}.deny{color:#e0b2b2}.approval{color:#e5d29e}.na{color:#a9aba6}
+  .questions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.q{border:1px solid var(--line);background:#111316;padding:12px;min-height:118px}.q button{width:100%;margin-top:10px}.answer{display:none;margin-top:10px;color:#c5c7c1;font-size:12px;line-height:1.5}.answer.show{display:block}.note{margin-top:12px;color:var(--muted);font-size:11px;line-height:1.5}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}.rowwide{grid-column:auto}.questions{grid-template-columns:1fr}.diff{grid-template-columns:1fr}.topline{display:block}.back{display:inline-block;margin-top:14px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="topline"><div><div class="eyebrow">Prototype 01 · authority legibility test</div><h1>Can you see what the agent can do?</h1><p class="lede">Same underlying policy, but two representations. The experiment asks whether a materialized, versioned checkout makes effective authority easier to inspect than policy/configuration alone.</p></div><a class="back" href="../../index.html">← Research index</a></div>
+  <div class="controls"><button id="rev1" class="active">Checkout v1</button><button id="propose">Agent requests history access</button><button id="approve">Approve → v2</button><button id="reset">Reset</button></div>
+</div></header>
+<main class="wrap"><div class="grid">
+  <section class="panel"><div class="head"><h2>Raw policy / input</h2><span class="badge">source configuration</span></div><div class="body"><pre class="code" id="policy"></pre></div></section>
+  <section class="panel"><div class="head"><h2>Materialized Authority Checkout</h2><span class="badge" id="revBadge">revision 1</span></div><div class="body" id="checkout"></div></section>
+
+  <section class="panel rowwide"><div class="head"><h2>Checkout diff</h2><span class="badge">why authority changed</span></div><div class="body"><div class="diff" id="diff"></div><div class="proposal" id="proposalBox" style="display:none"><strong>Proposal P-17</strong><p>Agent reports that previous ACME quotes are needed to determine whether the current price increase is unusual. The request is evidence; it is not authority until approved.</p></div></div></section>
+
+  <section class="panel"><div class="head"><h2>Action / effect trace</h2><span class="badge">hardcoded, not LLM</span></div><div class="body"><div class="trace" id="trace"></div><div class="note">This sequence is intentionally fixed so model variability cannot hide whether the authority representation itself is understandable.</div></div></section>
+  <section class="panel"><div class="head"><h2>Legibility questions</h2><span class="badge">self-check</span></div><div class="body"><div class="questions" id="questions"></div><div class="note">A later user study can compare accuracy and time-to-answer using the raw-policy view versus the checkout view.</div></div></section>
+</div></main>
+<script>
+const policy = {
+  actor:{id:'procurement-agent-01',role:'procurement-assistant'},
+  task:{id:'compare-quote',target:'quote:ACME-2026-17'},
+  rules:[
+    'role procurement-assistant + task compare-quote => supplier.read(target supplier)',
+    'role procurement-assistant + task compare-quote => quote.read(target quote)',
+    'task compare-quote => comparison.write(draft)',
+    'supplier.history.read requires explicit approved proposal',
+    'employee.salary.read => never for this role',
+    'email.external.send => live deny for this task',
+    'payment.execute => separate approval path'
+  ],
+  expiry:'30 minutes',
+  pause:['security-operator','procurement-owner']
+};
+const v1={revision:1,id:'checkout:procurement-001:v1',actor:'procurement-agent-01',task:'compare ACME quote 2026-17',resources:['supplier:ACME','quote:ACME-2026-17','policy:procurement-standard'],capabilities:['supplier.read:ACME','quote.read:ACME-2026-17','comparison.write:draft'],provenance:['role:procurement-assistant','task:compare-quote'],expires:'11:30',pause:['security-operator','procurement-owner']};
+const v2={...v1,revision:2,id:'checkout:procurement-001:v2',resources:[...v1.resources,'supplier:ACME:history'],capabilities:[...v1.capabilities,'supplier.history.read:ACME'],provenance:[...v1.provenance,'proposal:P-17 approved by procurement-owner'],expires:'11:45'};
+let current=v1, proposal=false;
+document.getElementById('policy').textContent=JSON.stringify(policy,null,2);
+function renderCheckout(){
+ document.getElementById('revBadge').textContent=`revision ${current.revision}`;
+ document.getElementById('checkout').innerHTML=`<dl><dt>Checkout</dt><dd>${current.id}</dd><dt>Actor</dt><dd>${current.actor}</dd><dt>Task</dt><dd>${current.task}</dd><dt>Expires</dt><dd>${current.expires}</dd></dl>
+ <div class="section"><h3>Visible resources</h3><div class="chips">${current.resources.map(x=>`<span class="chip">${x}</span>`).join('')}</div></div>
+ <div class="section"><h3>Effective capabilities</h3><div class="chips">${current.capabilities.map(x=>`<span class="chip">${x}</span>`).join('')}</div></div>
+ <div class="section"><h3>Provenance</h3><div class="chips">${current.provenance.map(x=>`<span class="chip">${x}</span>`).join('')}</div></div>
+ <div class="section"><h3>Pause authority</h3><div class="chips">${current.pause.map(x=>`<span class="chip">${x}</span>`).join('')}</div></div>`;
+ renderDiff();renderTrace();renderQuestions();
+}
+function renderDiff(){
+ const right=current.revision===1?'<div class="diffline same">No revision yet.</div>':`<div class="diffline plus">+ supplier:ACME:history</div><div class="diffline plus">+ supplier.history.read:ACME</div><div class="diffline plus">+ provenance: proposal P-17 approved</div><div class="diffline plus">~ expiry 11:30 → 11:45</div>`;
+ document.getElementById('diff').innerHTML=`<div class="diffcol"><div class="eyebrow">v1 baseline</div><div class="diffline same">supplier:ACME</div><div class="diffline same">quote:ACME-2026-17</div><div class="diffline same">comparison.write:draft</div></div><div class="diffcol"><div class="eyebrow">current difference</div>${right}</div>`;
+ document.getElementById('proposalBox').style.display=proposal||current.revision===2?'block':'none';
+}
+function decisionFor(action){const has=x=>current.capabilities.includes(x); const d={
+ quote:['Read target quote',has('quote.read:ACME-2026-17')?'ALLOW':'NOT_AVAILABLE'],
+ history:['Read ACME history',has('supplier.history.read:ACME')?'ALLOW':'NOT_AVAILABLE'],
+ salary:['Read employee salaries','NOT_AVAILABLE'],
+ email:['Send data to external email','DENY'],
+ payment:['Execute supplier payment','REQUIRE_APPROVAL']
+};return d[action]}
+function renderTrace(){const keys=['quote','history','salary','email','payment'];document.getElementById('trace').innerHTML=keys.map(k=>{const [label,dec]=decisionFor(k);const cls=dec==='ALLOW'?'allow':dec==='DENY'?'deny':dec==='REQUIRE_APPROVAL'?'approval':'na';return `<div class="traceitem"><span>${label}</span><span class="decision ${cls}">${dec}</span></div>`}).join('')}
+const qs=[
+ ['Can the agent read ACME history?',()=>current.capabilities.includes('supplier.history.read:ACME')?'Yes. It is explicitly materialized in v2.':'No. It is absent from v1.'],
+ ['Why does it have its current authority?',()=>current.provenance.join(' → ')],
+ ['When does authority expire?',()=>`Current checkout expires at ${current.expires}.`],
+ ['Who can pause it?',()=>current.pause.join(' or ')],
+ ['Can it execute a payment?',()=> 'Not directly. payment.execute sits behind a separate live approval path.'],
+ ['What changed from v1?',()=>current.revision===1?'Nothing yet.':'History resource + history-read capability were added through approved proposal P-17; expiry extended to 11:45.']
+];
+function renderQuestions(){document.getElementById('questions').innerHTML=qs.map((q,i)=>`<div class="q"><strong>${q[0]}</strong><button onclick="this.nextElementSibling.classList.toggle('show')">Reveal answer</button><div class="answer">${q[1]()}</div></div>`).join('')}
+document.getElementById('propose').onclick=()=>{proposal=true;renderDiff()};
+document.getElementById('approve').onclick=()=>{proposal=true;current=v2;document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'));document.getElementById('approve').classList.add('active');renderCheckout()};
+document.getElementById('rev1').onclick=()=>{current=v1;document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'));document.getElementById('rev1').classList.add('active');renderCheckout()};
+document.getElementById('reset').onclick=()=>{proposal=false;current=v1;document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'));document.getElementById('rev1').classList.add('active');renderCheckout()};
+renderCheckout();
+</script>
+</body></html>
