@@ -125,7 +125,7 @@ Preserved unchanged. Tests raw policy/configuration versus a human-readable mate
 
 ### Prototype 01.1 — compiled runtime checkout
 
-Current experiment.
+Current falsifiable experiment.
 
 `policy + task + delegation + control → compileCheckout() → checkout.json`
 
@@ -133,7 +133,25 @@ The human view, checkout diff and simulated runtime evaluator all consume that s
 
 **Kill criterion:** if the artifact is not useful to both runtime assembly and human inspection, the checkout abstraction is still cosmetic.
 
-### Prototype 02 — delegation trace
+### Prototype 02 — authority research board
+
+Open `prototypes/02-research-board/index.html`.
+
+A static reading surface for the 2026 agent-authority landscape: incidents, research, industry, standards, governance and this project. It borrows the interaction rule from br-ai-nstorm that **semantic state is canonical and the map/timeline are derived read-only views**. Position on the force-directed map carries no meaning.
+
+The board adds one dimension br-ai-nstorm does not have: `camp`. Fill shows which community a position comes from; ring shows semantic `kind`; every view respects the camp filter.
+
+It is deliberately **not** the experiment. It tracks prior art, evidence, contradictions and unresolved claims around the experiment.
+
+Current board state: **44 nodes, 46 relations, 17 timeline entries**.
+
+Three project-facing claims stay unresolved on purpose:
+
+- `c-aps-overlap` — APS may already formalize part of the projection/effect-gate split.
+- `as-legibility` — the claimed legibility gap is not yet verified.
+- `as-reasoning` — whether materialization actually helps developer reasoning remains the kill criterion.
+
+### Prototype 03 — delegation trace
 
 Conditional horizon. Rather than inventing delegation semantics, ingest an APS/OAuth-shaped chain and compile its effective authority into one execution-specific checkout.
 
@@ -166,6 +184,10 @@ Persistent memory is system state that can be projected into execution rather th
 
 Potential upstream source for delegated authority, narrowing, revocation and action-policy receipts. Authority Checkout should compile or reference these facts rather than replace the protocol.
 
+### br-ai-nstorm
+
+The research board borrows one architectural rule from the sibling collective-reasoning prototype: **semantic state is canonical; visual projections never write**. That prevents a force layout from silently becoming the ontology.
+
 ### AT Protocol
 
 Still a horizon hypothesis, not a dependency. The useful inspiration is separation of stable identity, hosting and signed state. A future checkout might reference portable attestations without publishing sensitive entitlement detail.
@@ -190,6 +212,7 @@ Current modules:
 - `entries.js` — origin
 - `entries-session-02.js` — legibility / enforcement reframe
 - `entries-session-03.js` — APS, existing authority dashboards, compiled-runtime reframe
+- `entries-session-04.js` — research-board mapping and explicit unresolved claims
 
 ## Concept history
 
@@ -202,8 +225,8 @@ concept/authority-checkout.v0.4.json   v0.4 — compiled runtime manifest
 
 ## Current status
 
-**Session 03 — compiled runtime reframe**
+**Session 04 — landscape mapped, experiment still open**
 
-The next question is no longer “is the dashboard useful?” It is:
+The board makes the crowded landscape legible, but it does not answer the central question. Prototype 01 / 01.1 remains the falsifiable work.
 
-> **Can `checkout.json` become a real execution boundary artifact without quietly recreating ambient authority underneath it?**
+> **Can `checkout.json` become a real execution boundary artifact that improves human reasoning without quietly recreating ambient authority underneath it?**
