@@ -23,14 +23,14 @@ window.AUTHORITY_CHECKOUT_EXPERIMENTS = [
   },
   {
     id: "01.1",
-    title: "Compiled runtime checkout",
+    title: "Single-artifact dual consumption",
     status: "working",
-    question: "Does the checkout become more than a dashboard when the same compiled artifact drives both the human view and the simulated runtime?",
-    description: "Policy, task, delegation and control inputs are compiled into checkout.json. The viewer, diff and runtime-effect simulation all consume that same machine-readable artifact. This is the first version where the Delta-style checkout analogy exists in code rather than only in presentation.",
+    question: "Can one task-scoped checkout artifact be consumed by both the human inspector and the runtime without parallel hidden authority state?",
+    description: "Policy, task, delegation and approved grants compile into checkout.json. The human viewer, computed artifact diff and generic runtime-effect evaluator all consume that same machine-readable artifact. Session 06 repaired an earlier implementation that violated this invariant.",
     href: "./prototypes/01.1-compiled-checkout/index.html",
     date: "2026-09-05",
-    tags: ["runtime-manifest", "compiled", "delta-lineage", "artifact"],
-    killCriterion: "If the compiled checkout is not useful to both runtime assembly and human inspection, the checkout abstraction is still cosmetic."
+    tags: ["dual-consumption", "runtime-manifest", "legibility", "artifact"],
+    killCriterion: "If either the runtime or human inspection depends on separate hardcoded authority state, or the shared artifact adds no reasoning value, narrow or stop the project."
   },
   {
     id: "02",
