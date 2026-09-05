@@ -1,0 +1,230 @@
+{
+  "schema": "authority-checkout/project-concept/v0.1",
+  "project": {
+    "name": "Authority Checkout",
+    "repo": "authority-checkout",
+    "status": "exploratory",
+    "type": [
+      "reference architecture",
+      "research prototype",
+      "agent security experiment"
+    ],
+    "tagline": "Agents shouldn't operate with ambient authority. Give them a checkout."
+  },
+  "origin": {
+    "inspirations": [
+      {
+        "concept": "Delta-style checkout architecture",
+        "lesson": "The representation an agent works against does not need to be the authoritative state."
+      },
+      {
+        "concept": "Externalized agent memory",
+        "lesson": "Persistent state belongs to the system rather than intrinsically to an agent."
+      },
+      {
+        "concept": "Agent identity governance",
+        "lesson": "Identity, role and delegation should influence but not fully determine effective runtime authority."
+      },
+      {
+        "concept": "Least privilege and capability security",
+        "lesson": "Agents should not receive ambient access to every resource available to their host application."
+      }
+    ]
+  },
+  "hypothesis": {
+    "primary": "An agent runtime can be made easier to govern and reason about when the agent operates against a task-scoped materialization of state and authority rather than directly against canonical application state and ambient capabilities.",
+    "short_form": "Agents consume governed projections and request effects through controlled boundaries.",
+    "research_question": "Is an authority checkout a useful abstraction for making agent runtime authority easier to inspect, constrain, version and test?",
+    "not_claimed": [
+      "This solves prompt injection.",
+      "This automatically derives perfect least privilege.",
+      "This is a new security primitive.",
+      "This can literally snapshot all external reality.",
+      "This replaces IAM.",
+      "This makes autonomous agents safe."
+    ]
+  },
+  "core_model": {
+    "canonical_state": {
+      "description": "Authoritative application and organizational state.",
+      "may_include": [
+        "data",
+        "memory",
+        "relationships",
+        "identity",
+        "policy",
+        "resources",
+        "tool registrations",
+        "history"
+      ]
+    },
+    "checkout": {
+      "description": "A task-scoped materialization of state and effective authority exposed to an agent.",
+      "dimensions": [
+        "visible resources",
+        "projected memory",
+        "available tools",
+        "capabilities",
+        "constraints",
+        "provenance",
+        "task",
+        "identity",
+        "delegation",
+        "expiry"
+      ]
+    },
+    "agent": {
+      "description": "A probabilistic actor operating within the currently exposed checkout."
+    },
+    "effects": {
+      "description": "Requests produced by the agent that may change external state or cause irreversible actions.",
+      "classes": {
+        "candidate_state_changes": [
+          "draft",
+          "record update",
+          "document modification"
+        ],
+        "effectful_actions": [
+          "send",
+          "publish",
+          "purchase",
+          "transfer",
+          "delete"
+        ]
+      }
+    },
+    "authorization_boundary": {
+      "description": "External deterministic or policy-driven control point between an agent request and canonical systems.",
+      "outcomes": [
+        "ALLOW",
+        "DENY",
+        "MODIFY",
+        "APPROVAL",
+        "NOT_AVAILABLE"
+      ]
+    }
+  },
+  "flow": [
+    "canonical state",
+    "checkout policy",
+    "authority checkout",
+    "agent reasoning",
+    "requested action or candidate state change",
+    "live authorization",
+    "effect",
+    "audit",
+    "canonical state"
+  ],
+  "principles": [
+    "The agent-visible world is not the canonical world.",
+    "Persistent memory belongs to the system.",
+    "Absence from context is not equivalent to absence of runtime authority.",
+    "Sensitive capabilities must be enforced outside the model.",
+    "Authority should be task-scoped and time-scoped.",
+    "Authority expansion should cross an explicit boundary.",
+    "Consequential effects should be re-authorized when executed.",
+    "Every checkout should be attributable and inspectable.",
+    "Every important decision should be auditable.",
+    "Probabilistic reasoning should not overwrite authoritative state."
+  ],
+  "known_challenges": [
+    {
+      "id": "least-privilege-discovery",
+      "problem": "The system may not know in advance which resources an autonomous agent will legitimately need."
+    },
+    {
+      "id": "prompt-injection",
+      "problem": "Authorized projected data can itself contain malicious instructions."
+    },
+    {
+      "id": "tool-trust",
+      "problem": "Tools and their descriptions may themselves be malicious or misleading."
+    },
+    {
+      "id": "staleness",
+      "problem": "A checkout can become inconsistent with live permissions or external state."
+    },
+    {
+      "id": "irreversible-effects",
+      "problem": "Many actions cannot be represented safely as reviewable state deltas."
+    },
+    {
+      "id": "delegation",
+      "problem": "Authority becomes difficult to reason about across chains of agents and tools."
+    },
+    {
+      "id": "utility-security-tension",
+      "problem": "Restricting authority too aggressively can destroy the flexibility that makes agents useful."
+    }
+  ],
+  "research_questions": [
+    "Is an authority checkout a useful abstraction for developers?",
+    "Can developers understand an agent's effective authority more easily through a materialized checkout representation?",
+    "Which parts of agent authority can reasonably be projected ahead of execution?",
+    "Which capabilities must always be authorized live?",
+    "How should an agent request expansion of its checkout?",
+    "How should authority propagate across agent delegation?",
+    "Can checkout diffs make agent behavior easier to audit?",
+    "Can the abstraction reduce blast radius when the model is compromised?",
+    "Where does the checkout metaphor stop being useful?"
+  ],
+  "prototype": {
+    "goal": "Make the abstraction concrete enough to test and criticize.",
+    "initial_scope": {
+      "domain": "procurement",
+      "canonical_state": "local JSON",
+      "policy_engine": "deterministic TypeScript",
+      "agent": "optional initially",
+      "effects": "simulated",
+      "ui": "browser"
+    }
+  },
+  "iterations": [
+    {
+      "version": "0.1",
+      "name": "Static Checkout",
+      "goal": "Generate and visualize a checkout from actor, task and policy."
+    },
+    {
+      "version": "0.2",
+      "name": "Action Boundary",
+      "goal": "Evaluate proposed actions against the checkout."
+    },
+    {
+      "version": "0.3",
+      "name": "Agent Experiment",
+      "goal": "Run an LLM inside the same scenario and record attempted actions."
+    },
+    {
+      "version": "0.4",
+      "name": "Authority Expansion",
+      "goal": "Allow the agent to explicitly request additional resources or capabilities."
+    },
+    {
+      "version": "0.5",
+      "name": "Checkout History",
+      "goal": "Version authority changes and display diffs between checkout revisions."
+    },
+    {
+      "version": "0.6",
+      "name": "Red-Team Scenarios",
+      "goal": "Test prompt injection, memory poisoning, tool misuse and cross-task access."
+    },
+    {
+      "version": "0.7",
+      "name": "Real Adapter",
+      "goal": "Connect one low-risk external system while retaining deterministic enforcement."
+    },
+    {
+      "version": "0.8",
+      "name": "Delegation",
+      "goal": "Explore authority propagation across two cooperating agents."
+    }
+  ],
+  "success_criteria": {
+    "research": "The project produces evidence about where the checkout abstraction helps and where it breaks.",
+    "prototype": "A user can inspect exactly what an agent can currently perceive and attempt.",
+    "security": "The prototype demonstrates bounded authority even when agent reasoning is intentionally adversarial.",
+    "documentation": "Claims, assumptions, limitations and observed results remain clearly separated."
+  }
+}
