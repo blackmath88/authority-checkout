@@ -35,6 +35,7 @@ The project is inspired by the architectural inversion behind Delta-style checko
 - a small interactive prototype
 - an experimental notebook for agent-security ideas
 - a place to test where the checkout metaphor helps and where it breaks
+- a documented learning journey, including wrong assumptions and failed ideas
 
 ## What this project is not
 
@@ -90,6 +91,22 @@ We then intentionally give the model adversarial instructions and observe the di
 2. what exists in its checkout
 3. what the external boundary actually permits
 
+## Learning journey
+
+The project keeps a chronological record of how the idea changes under criticism and experimentation.
+
+Open `docs/journey/index.html` to see the current journal.
+
+Each entry records:
+
+- what I assumed
+- what challenged that assumption
+- what I learned
+- what changed in the model
+- what remains open
+
+The journal is intentionally data-driven: add or edit entries in `docs/journey/entries.js` and the HTML updates automatically. The goal is to preserve the reasoning path rather than only publishing a cleaned-up final theory.
+
 ## Repository map
 
 ```text
@@ -101,15 +118,21 @@ docs/
   limitations.md            where the idea breaks
   related-work.md           adjacent ideas and systems
   roadmap.md                iterative research/build path
+  journey/
+    index.html               learning-journey renderer
+    entries.js               modular learning entries
 
 examples/
   procurement/
     scenario.json           first controlled scenario
+
+prototype/
+  index.html                 dependency-free interactive prototype
 ```
 
 ## Current status
 
-**v0.1 — concept + static scenario**
+**v0.1 — concept + static scenario + learning journal**
 
 The next implementation step is a tiny browser simulator that can:
 
