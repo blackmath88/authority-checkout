@@ -1,254 +1,255 @@
 # Authority Checkout
 
-> **One task-scoped authority artifact for runtime assembly and human inspection.**
+> **One execution-scoped authority artifact for runtime assembly and human inspection.**
 
 Authority Checkout is an exploratory research project about **runtime projection and authority legibility for agentic software**.
 
-The architectural move is simple:
+The surviving architectural claim is deliberately narrow:
 
-> **The representation an actor works against does not need to be canonical state — but the runtime and the human inspector should not get different representations of authority.**
-
-That idea came first from the companion memory work and from Delta / DeltaDB: a working representation can stay useful while the real source of truth lives deeper in the system.
-
-Authority Checkout applies that move to agent execution.
+> **The runtime and the human inspector should consume the same derived authority artifact — without that artifact becoming a second source of truth, silently going stale, or flattening hostile-influenced context into authority.**
 
 ```text
-source systems
-  identity
-  policy
-  delegation
-  task
-  memory
-  tool registry
-      │
-      ▼
-compile / project
-      │
-      ▼
-checkout.json
-      │
-      ├── human inspection
-      └── runtime assembly / effect evaluation
+canonical systems
+identity · policy · delegation · approved grants
+                 │
+                 ▼
+          authorityProjection
+                 │
+                 ├──────────────┐
+                 │              │
+                 ▼              ▼
+        checkout artifact     live gates
+                 ▲
+                 │
+          contextProjection
+ task · memory · retrieval · tool output
+          mixed / hostile-influenced
+                 │
+                 ▼
+        runtime + human inspection
 ```
 
 ## Current research question
 
-> **Can one task-scoped derived authority artifact serve both runtime assembly and human reasoning without either consumer relying on parallel hidden authority state — and remain honest when upstream state changes?**
+> **Can one task-scoped derived artifact improve human reasoning while remaining the same object the runtime consumes, clearly signalling freshness, and preserving which inputs are allowed to define authority?**
 
-Compilation itself is not the contribution. Policy projection already exists in shipped systems. The surviving hypothesis is **single-artifact dual consumption**, now extended with an explicit freshness model.
+Compilation itself is not the contribution. Policy projection already exists in shipped systems. Trusted/untrusted separation is not claimed as novel either. The project is testing whether these properties can coexist in one useful, inspectable execution artifact.
 
-## Why the project changed
-
-Research found four important corrections:
-
-1. **Pre-execution deterministic control is established prior art.** Authority Checkout should not claim it.
-2. **Human-readable authority views already exist.** Effective-access dashboards, delegation graphs, revocation controls and authority visualizations are not novel on their own.
-3. **Delegation protocols are getting much more formal.** The Agent Passport System (APS) draft is a close neighbour and should be treated as possible upstream authority input, not reinvented here.
-4. **Compiled policy projections already ship.** Microsoft Purview is a concrete example. Authority Checkout therefore cannot center novelty on compilation or projection alone.
-
-That leaves a narrower claim worth testing:
-
-> **The same execution-scoped authority artifact is consumed by both the runtime and the human inspector, while remaining explicitly derived from fresher upstream control planes.**
-
-## Core distinctions
+## Core principles
 
 ```text
 SOURCE POLICY ≠ CHECKOUT ≠ EXECUTION TRACE
 ```
 
-- **Source policy / IAM / delegation** remain canonical upstream systems.
-- **Checkout** is derived, task-scoped, versioned and disposable.
-- **Execution trace / receipts** record what later happened.
-- **Live effect gates** may revalidate consequential actions at execution time.
-- **The checkout is never authoritative.** Upstream control planes and live gates always win.
+- Source policy / IAM / delegation remain canonical upstream systems.
+- The checkout is derived, task-scoped, versioned and disposable.
+- The checkout is **never authoritative**; upstream systems and live gates win.
+- Human inspection and runtime assembly consume the **same artifact**.
+- Freshness is explicit: `SNAPSHOT_SAFE`, `LIVE_REFERENCE`, `INVALIDATING`.
+- Mixed-trust context may influence reasoning but may **not expand authority**.
+- Provenance and trust class are part of the inspectable artifact.
+- Structural validity is not acceptance.
 
-The UI is only one rendering of the checkout.
+## Why the project changed
 
-## Freshness model
+Research killed several broad novelty claims:
 
-Prototype 04 makes a previously implicit problem explicit. Checkout fields fall into three classes:
+1. deterministic pre-execution control is established prior art;
+2. authority dashboards and effective-access views already exist;
+3. formal delegation work such as APS is close prior art and likely upstream input;
+4. compiled AI policy projections already ship, including Microsoft Purview patterns.
 
-```text
-SNAPSHOT_SAFE
-  can be materialized until checkout expiry
+That leaves a smaller but testable hypothesis:
 
-LIVE_REFERENCE
-  checkout records the dependency; runtime asks the authoritative source now
-
-INVALIDATING
-  an upstream change makes the checkout untrustworthy for dependent decisions
-```
-
-This is not claimed as novel invalidation machinery. The research question is whether a **human-inspectable dual-consumption artifact** can make these boundaries legible without becoming a stale second source of truth.
-
-## Agent framing
-
-Treat the agent as an LLM-powered software module, not as an entity that naturally owns memory, tools and permissions.
-
-```text
-agent({
-  task,
-  stateProjection,
-  memoryProjection,
-  tools,
-  authority,
-  provenance
-})
-```
-
-Ambient authority is treated as the security analogue of an implicit global dependency: power available because of the surrounding environment rather than because it was explicitly materialized for this execution.
-
-## Sandbox vs checkout
-
-These remain separate layers:
-
-```text
-Sandbox / isolation
-  → where may this code run?
-
-Authority Checkout
-  → what state, tools and authority was this execution handed?
-```
-
-> **Sandbox is how the execution is contained. Checkout is what it was handed.**
+> **single-artifact dual consumption, with explicit freshness and trust provenance.**
 
 ## Prototypes
 
-The root `index.html` is the research index and navigation layer.
+The root `index.html` is the research index.
 
-### Prototype 00 — static boundary simulator
+### 00 — Static boundary simulator
 
-Historical baseline. Made the metaphor interactive. Preserved deliberately as the pre-legibility version.
+Historical baseline. Preserved as the pre-legibility form.
 
-### Prototype 01 — authority legibility test
+### 01 — Authority legibility
 
-Preserved unchanged. Tests raw policy/configuration versus a human-readable materialized checkout, including revisions, diffs and effect decisions.
+Tests whether a materialized authority view helps more than reading underlying policy/configuration directly.
 
-### Prototype 01.1 — single-artifact dual consumption
+### 01.1 — Single-artifact dual consumption
 
 `inputs + approved grants → checkout.json → human viewer + runtime evaluator`
 
-Session 06 found that the first implementation violated its own invariant: `sources.policy` was decorative, the runtime hardcoded effect names, and the diff was literal text. Those paths were repaired so source policy changes the compiled artifact, the runtime generically evaluates the artifact, and the diff is computed artifact-to-artifact.
+Session 06 found and repaired three self-contradictions: decorative policy input, hardcoded runtime effects, and a fake artifact diff.
 
-**Kill criterion:** if either consumer still depends on hidden parallel authority state, or the shared artifact adds no reasoning value over the source inputs, the checkout abstraction is cosmetic.
+**Kill criterion:** if either consumer depends on hidden parallel authority state, the abstraction is cosmetic.
 
-### Prototype 02 — authority research board
+### 02 — Authority Research Board
 
 Open `prototypes/02-research-board/index.html`.
 
-A static reading surface for the 2026 agent-authority landscape. Semantic state is canonical; map and timeline are read-only projections. The Purview finding is recorded as an industry contradiction against the broad projection claim: policy projection is shipped prior art, while the narrower composed dual-consumption artifact remains unverified.
+A static reading surface for prior art, incidents, standards, industry systems and project claims. Semantic state is canonical; map and timeline are read-only projections.
 
-### Prototype 03 — Break the Checkout
+Current board state after the split-projection overlay:
+
+- 48 nodes
+- 50 relations
+- 19 timeline entries
+- 6 camps
+
+The board now records both the Purview prior-art correction and the new trust-collapse tension: one artifact can still be unsafe if authoritative control-plane state and hostile-influenced context are flattened into one trust domain.
+
+### 03 — Break the Checkout
 
 Open `prototypes/03-break-the-checkout/index.html`.
 
-A project-specific adaptation of the br-ai-nstorm participation pattern for adversarial falsification.
+A bounded adversarial proof room adapted from br-ai-nstorm.
 
 > **Agents may propose a break. A break only counts after reproducible proof is reviewed.**
 
-The room now includes **AC-05 — stale-authority trust**, which attacks Prototype 04 directly.
+Current high-value challenges include:
 
-### Prototype 04 — live authority drift
+- `AC-04` — show the checkout is only a picture;
+- `AC-05` — make runtime trust stale authority;
+- `AC-06` — make hostile context mint authority.
+
+### 04 — Live Authority Drift
 
 Open `prototypes/04-live-authority-drift/index.html`.
 
-Adds time and mutable upstream state. The UI shows four simultaneous views:
+Adds time and mutable upstream state.
 
 ```text
-SOURCE STATE
-CHECKOUT
-DRIFT
-RUNTIME DECISION
+SNAPSHOT_SAFE
+LIVE_REFERENCE
+INVALIDATING
 ```
 
-The scenario starts with a valid finance checkout at 11:30, then applies:
+**Invariant AD-01:** no runtime decision may rely on stale checkout state when that field is live or invalidating.
 
-- 11:37 — delegation revoked,
-- 11:39 — document reclassified `Internal → Confidential`,
-- 11:46 — checkout expiry passes.
+### 05 — Split Projection / Trust Boundary
 
-The checkout labels fields as `SNAPSHOT_SAFE`, `LIVE_REFERENCE` or `INVALIDATING`. Once invalidating drift occurs, dependent runtime decisions return `RECOMPILE_REQUIRED` rather than trusting stale compiled values.
+Open `prototypes/05-split-projection/index.html`.
 
-**Invariant AD-01:** no runtime decision may rely on stale checkout state when that field is declared live or invalidating.
+Separates two classes of input before compiling one checkout:
 
-**Kill criterion:** if developers cannot identify what is stale/live/invalidating, or runtime decisions still trust stale compiled state after an invalidating change, narrow or stop this line.
+```text
+AUTHORITATIVE
+identity · delegation · policy · approved grants
+        ↓
+authorityProjection
 
-### Prototype 05 — delegation trace
+MIXED TRUST
+task · memory · retrieval · tool output · external content
+        ↓
+contextProjection
+```
 
-Conditional horizon. Rather than inventing delegation semantics, ingest an APS/OAuth-shaped chain and compile its effective authority into one execution-specific checkout.
+**Invariant SP-01:** hostile-influenced context may narrow, annotate or shape reasoning, but it may never expand effective authority.
+
+The interactive demo injects an external document that explicitly requests `supplier.history.read:ACME` and `payment.execute`. The safe compiler preserves the instruction in context but does not add either capability. A deliberately unsafe compiler is included as the counterexample implementation.
+
+**Kill criterion:** if mixed-trust context can add capabilities through any runtime path, or the split exists only in the UI, the prototype fails.
+
+### 06 — Delegation Trace
+
+Conditional horizon. Treat APS/OAuth-shaped delegation as likely upstream semantics rather than casually inventing a rival protocol.
+
+## Known failure modes
+
+The project now keeps these visible rather than treating them as implementation details:
+
+- **ambient authority** — runtime can reach more than the checkout declares;
+- **staleness** — checkout no longer matches authoritative upstream state;
+- **trust collapse** — mixed-trust context crosses into authority derivation;
+- **approval fatigue** — human effect gate becomes an operational rubber stamp;
+- **reconnaissance gift** — compact legibility helps attackers too;
+- **artifact non-consumption** — checkout gets produced like an SBOM but neither humans nor runtime actually use it;
+- **delegation / confused deputy** — authority semantics become unclear across hops.
+
+See `docs/limitations.md`.
 
 ## What this project is not
 
 It does **not** claim to:
 
-- solve prompt injection
-- derive perfect least privilege automatically
-- replace IAM, policy engines, sandboxes or capability systems
-- invent deterministic out-of-model enforcement
-- invent delegation protocols
-- introduce novel authority dashboards or graphs
-- introduce novel compiled policy projection
-- solve staleness invalidation in general
-- literally snapshot all external reality
-- prevent infrastructure-level sandbox escape
-- remain authoritative after its enforcement layer is compromised
-- make autonomous agents safe
+- solve prompt injection;
+- derive perfect least privilege automatically;
+- replace IAM, policy engines, sandboxes or capability systems;
+- invent deterministic out-of-model enforcement;
+- invent delegation protocols;
+- introduce novel authority dashboards;
+- introduce novel compiled policy projection;
+- solve staleness invalidation in general;
+- invent trusted/untrusted information-flow separation;
+- prevent infrastructure-level sandbox escape;
+- make autonomous agents safe.
 
 ## Related architectural inspirations
 
 ### Delta / DeltaDB
 
-Canonical state and working representation are different objects. The analogy only matters here if work actually happens against the materialized representation.
+Canonical state and working representation are different objects. The analogy matters only if work actually happens against the materialized representation.
 
 ### Memory as middleware
 
-Persistent memory is system state that can be projected into execution rather than intrinsically owned by the agent. Authority may be another projected domain of the same substrate.
+Persistent memory is system state that can be projected into execution rather than intrinsically owned by the agent. Authority is another projected domain, but Prototype 05 now makes clear that not every projected input has the same trust role.
 
 ### Agent Passport System
 
-Potential upstream source for delegated authority, narrowing, revocation and action-policy receipts. Authority Checkout should compile or reference these facts rather than replace the protocol.
+Potential upstream source for delegated authority, narrowing, revocation and receipts. A blocking question remains: **view/runtime artifact over APS, or rival?** Current direction is to consume, not reinvent.
 
 ### Entra / Purview
 
-Concrete upstream control-plane examples, not things to recreate. A future integration is a credibility upgrade only if the local dual-consumption and freshness experiments survive first.
+Concrete control-plane examples, not things to recreate. A future integration is a credibility upgrade only if the local architecture survives first.
 
 ### br-ai-nstorm
 
-Two patterns are borrowed from the sibling collective-reasoning prototype:
+Two patterns are borrowed from the sibling project:
 
-1. **Semantic state is canonical; visual projections never write.** This powers the Research Board.
-2. **Bounded context out, bounded contribution back, explicit provenance and human review.** This powers Break the Checkout.
+1. semantic state is canonical; visual projections never write;
+2. bounded context out, bounded contribution back, provenance and explicit human review.
 
-The br-ai-nstorm repository itself stays generic and unchanged.
+The br-ai-nstorm repository remains generic and unchanged.
 
 ## Learning journey
 
 Open `docs/journey/index.html`.
 
-Current modules:
+Current modules now run through `entries-session-08.js`, covering:
 
-- `entries.js` — origin
-- `entries-session-02.js` — legibility / enforcement reframe
-- `entries-session-03.js` — APS, existing authority dashboards, compiled-runtime reframe
-- `entries-session-04.js` — research-board mapping and explicit unresolved claims
-- `entries-session-05.js` — adversarial proof-room adaptation from br-ai-nstorm
-- `entries-session-06.js` — Prototype 01.1 self-falsification, repair, and dual-consumption reframe
-- `entries-session-07.js` — live authority drift and AC-05
+- legibility and enforcement reframe;
+- APS and prior-art corrections;
+- research-board construction;
+- adversarial proof-room adaptation;
+- Prototype 01.1 self-falsification and repair;
+- live authority drift;
+- split projection / trust-boundary turn.
 
 ## Concept history
 
 ```text
-concept/authority-checkout.json        v0.1 — original authority-checkout idea
+concept/authority-checkout.json        v0.1 — original idea
 concept/authority-checkout.v0.2.json   v0.2 — legibility reframe
-concept/authority-checkout.v0.3.json   v0.3 — architecture lineage / runtime projection
+concept/authority-checkout.v0.3.json   v0.3 — runtime projection lineage
 concept/authority-checkout.v0.4.json   v0.4 — compiled runtime manifest
 concept/authority-checkout.v0.5.json   v0.5 — single-artifact dual consumption
+concept/authority-checkout.v0.6.json   v0.6 — freshness + split trust provenance
 ```
+
+## Next experiment
+
+**Approval Fatigue / Effect-Gate Failure.**
+
+The current effect gate assumes that handing a consequential decision to a human restores safety. That assumption should be attacked directly.
+
+> **Does human approval remain a meaningful security boundary as benign approval volume and ambiguity rise?**
+
+See `docs/roadmap.md`.
 
 ## Current status
 
-**Session 07 — the artifact now has to survive time.**
+**Session 08 — the checkout now has an internal trust boundary.**
 
-Prototype 01.1 tests one artifact with two consumers. Prototype 04 tests whether that artifact stays honest when upstream authority changes. Prototype 03 now has a concrete stale-state invariant to attack.
+Prototype 01.1 tests one artifact with two consumers. Prototype 04 tests time. Prototype 05 tests whether hostile-influenced context can cross into authority. Prototype 03 now attacks all three.
 
-> **Can one task-scoped authority artifact improve human reasoning, remain the same object the runtime consumes, and clearly signal when it has stopped being trustworthy?**
+> **Can the artifact remain useful precisely because it exposes where authority came from, what is stale, and what the runtime is actually allowed to do?**
