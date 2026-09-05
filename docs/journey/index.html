@@ -36,24 +36,9 @@
   </style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <div class="kicker">Authority Checkout / learning journal</div>
-      <h1>What I thought. What broke. What changed.</h1>
-      <p class="intro">This is not a polished theory. It is a chronological record of an idea being challenged: wrong assumptions, missing architectural knowledge, reframings, and the questions that remain open.</p>
-      <div class="note">The journal is intentionally modular. The base entries live in <code>entries.js</code>; later sparring sessions append their own files. Critiques are inputs, not truth, so newer entries may include provenance and verification state.</div>
-    </div>
-  </header>
-
-  <main class="wrap">
-    <div class="toolbar" id="filters"></div>
-    <section class="journey" id="journey"></section>
-  </main>
-
-  <footer>
-    <div class="wrap">Authority Checkout is an exploratory research prototype. A failed assumption is useful evidence.</div>
-  </footer>
-
+  <header><div class="wrap"><div class="kicker">Authority Checkout / learning journal</div><h1>What I thought. What broke. What changed.</h1><p class="intro">This is not a polished theory. It is a chronological record of an idea being challenged: wrong assumptions, missing architectural knowledge, reframings, and the questions that remain open.</p><div class="note">The journal is intentionally modular. Critiques are inputs, not truth, so newer entries may include provenance and verification state.</div></div></header>
+  <main class="wrap"><div class="toolbar" id="filters"></div><section class="journey" id="journey"></section></main>
+  <footer><div class="wrap">Authority Checkout is an exploratory research prototype. A failed assumption is useful evidence.</div></footer>
   <script src="./entries.js"></script>
   <script src="./entries-session-02.js"></script>
   <script src="./entries-session-03.js"></script>
@@ -62,50 +47,14 @@
   <script src="./entries-session-06.js"></script>
   <script src="./entries-session-07.js"></script>
   <script src="./entries-session-08.js"></script>
+  <script src="./entries-session-09.js"></script>
   <script>
     const entries = window.AUTHORITY_CHECKOUT_JOURNEY || [];
     const journey = document.getElementById('journey');
     const filters = document.getElementById('filters');
     const stages = ['all', ...new Set(entries.map(e => e.stage))];
-
-    function render(filter='all') {
-      journey.innerHTML = '';
-      entries.filter(e => filter === 'all' || e.stage === filter).forEach(e => {
-        const article = document.createElement('article');
-        const evidence = e.source || e.verification
-          ? `<div class="evidence"><strong>Evidence note:</strong> ${e.source || 'not recorded'}${e.verification ? `<br><strong>Status:</strong> ${e.verification}` : ''}</div>`
-          : '';
-        article.innerHTML = `
-          <div class="meta"><strong>#${e.id}</strong><br>${e.date}<br><span class="stage">${e.stage}</span></div>
-          <div>
-            <h2>${e.title}</h2>
-            <div class="grid">
-              <div class="block"><div class="label">What I assumed</div><p>${e.assumption}</p></div>
-              <div class="block"><div class="label">What challenged it</div><p>${e.challenge}</p></div>
-              <div class="block"><div class="label">What I learned</div><p>${e.learning}</p></div>
-              <div class="block"><div class="label">What changed</div><p>${e.changed}</p></div>
-              <div class="block" style="grid-column:1/-1"><div class="label">Still open</div><p>${e.open}</p></div>
-            </div>
-            <div class="tags">${e.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-            ${evidence}
-          </div>`;
-        journey.appendChild(article);
-      });
-    }
-
-    stages.forEach((stage, i) => {
-      const button = document.createElement('button');
-      button.textContent = stage;
-      if (i === 0) button.classList.add('active');
-      button.onclick = () => {
-        [...filters.children].forEach(b => b.classList.remove('active'));
-        button.classList.add('active');
-        render(stage);
-      };
-      filters.appendChild(button);
-    });
-
-    render();
+    function render(filter='all') { journey.innerHTML=''; entries.filter(e=>filter==='all'||e.stage===filter).forEach(e=>{ const article=document.createElement('article'); const evidence=e.source||e.verification?`<div class="evidence"><strong>Evidence note:</strong> ${e.source||'not recorded'}${e.verification?`<br><strong>Status:</strong> ${e.verification}`:''}</div>`:''; article.innerHTML=`<div class="meta"><strong>#${e.id}</strong><br>${e.date}<br><span class="stage">${e.stage}</span></div><div><h2>${e.title}</h2><div class="grid"><div class="block"><div class="label">What I assumed</div><p>${e.assumption}</p></div><div class="block"><div class="label">What challenged it</div><p>${e.challenge}</p></div><div class="block"><div class="label">What I learned</div><p>${e.learning}</p></div><div class="block"><div class="label">What changed</div><p>${e.changed}</p></div><div class="block" style="grid-column:1/-1"><div class="label">Still open</div><p>${e.open}</p></div></div><div class="tags">${e.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>${evidence}</div>`; journey.appendChild(article); }); }
+    stages.forEach((stage,i)=>{const button=document.createElement('button');button.textContent=stage;if(i===0)button.classList.add('active');button.onclick=()=>{[...filters.children].forEach(b=>b.classList.remove('active'));button.classList.add('active');render(stage)};filters.appendChild(button)});render();
   </script>
 </body>
 </html>
