@@ -1,90 +1,11 @@
 window.AUTHORITY_CHECKOUT_EXPERIMENTS = [
-  {
-    id: "00",
-    title: "Static boundary simulator",
-    status: "baseline",
-    question: "Can the checkout metaphor be made concrete enough to interact with?",
-    description: "The first rough simulator. It shows a static procurement checkout and lets the user attempt actions against a simple deterministic boundary. Preserved as the historical baseline rather than treated as the current research experiment.",
-    href: "./prototype/index.html",
-    date: "2026-09-05",
-    tags: ["baseline", "procurement", "static"],
-    killCriterion: "None. This prototype exists to make the metaphor visible, not to validate the current legibility claim."
-  },
-  {
-    id: "01",
-    title: "Authority legibility test",
-    status: "preserved",
-    question: "Can developers reason about effective agent authority more reliably from a materialized checkout than from policy/configuration alone?",
-    description: "The first decisive experiment: raw policy/input beside the resulting Authority Checkout, checkout revisions and diffs, action/effect trace, expiry, provenance and pause authority. Preserved unchanged as the legibility-only version.",
-    href: "./prototypes/01-legibility/index.html",
-    date: "2026-09-05",
-    tags: ["legibility", "diff", "falsification"],
-    killCriterion: "If the checkout tells a developer nothing useful beyond the underlying policy/configuration, narrow or stop the project."
-  },
-  {
-    id: "01.1",
-    title: "Single-artifact dual consumption",
-    status: "working",
-    question: "Can one task-scoped checkout artifact be consumed by both the human inspector and the runtime without parallel hidden authority state?",
-    description: "Policy, task, delegation and approved grants compile into checkout.json. The human viewer, computed artifact diff and generic runtime-effect evaluator all consume that same machine-readable artifact. Session 06 repaired an earlier implementation that violated this invariant.",
-    href: "./prototypes/01.1-compiled-checkout/index.html",
-    date: "2026-09-05",
-    tags: ["dual-consumption", "runtime-manifest", "legibility", "artifact"],
-    killCriterion: "If either the runtime or human inspection depends on separate hardcoded authority state, or the shared artifact adds no reasoning value, narrow or stop the project."
-  },
-  {
-    id: "02",
-    title: "Authority research board",
-    status: "reading surface",
-    question: "Where does Authority Checkout actually differ from the 2026 agent-authority landscape, and which of its own claims remain weak?",
-    description: "Static, no-build research board mapping incidents, research, industry, standards, governance and this project. Semantic state is canonical; map and timeline are read-only projections. Camp filtering keeps the landscape from collapsing into one undifferentiated cloud.",
-    href: "./prototypes/02-research-board/index.html",
-    date: "2026-09-05",
-    tags: ["research", "prior-art", "landscape", "br-ai-nstorm"],
-    killCriterion: "None. This board does not validate the project; it must preserve findings that weaken it and keep the executable prototypes as the falsifiable work."
-  },
-  {
-    id: "03",
-    title: "Break the Checkout",
-    status: "adversarial proof room",
-    question: "Will independent people or LLMs produce useful, reviewable counterexamples when the architectural invariant and required proof format are explicit?",
-    description: "A project-specific adaptation of the br-ai-nstorm participation pattern for falsification. Export a bounded challenge context into any LLM, return a structured proof package, and review it locally. Agents can propose a break; they cannot silently turn it into canonical truth.",
-    href: "./prototypes/03-break-the-checkout/index.html",
-    date: "2026-09-05",
-    tags: ["adversarial", "falsification", "proof", "br-ai-nstorm", "llm-aperture"],
-    killCriterion: "If adversarial participants mostly produce unverifiable claims, generic critique, or proofs that humans cannot reproduce, do not add backend/MCP infrastructure for this workflow."
-  },
-  {
-    id: "04",
-    title: "Live authority drift",
-    status: "working",
-    question: "When does a derived checkout stop being trustworthy after upstream authority changes?",
-    description: "Adds time and mutable upstream state. The prototype classifies checkout fields as SNAPSHOT_SAFE, LIVE_REFERENCE or INVALIDATING, then applies delegation revocation, data reclassification and expiry events while showing source state, checkout state, drift and runtime decisions side by side.",
-    href: "./prototypes/04-live-authority-drift/index.html",
-    date: "2026-09-05",
-    tags: ["staleness", "revocation", "freshness", "runtime", "dual-consumption"],
-    killCriterion: "If developers cannot tell what is stale/live/invalidating, or runtime decisions still trust stale compiled state after an invalidating change, narrow or stop this line."
-  },
-  {
-    id: "05",
-    title: "Split projection / trust boundary",
-    status: "working",
-    question: "Can hostile-influenced context shape reasoning without ever expanding effective authority?",
-    description: "Separates authoritative control-plane inputs from mixed-trust task, memory, retrieval and tool-output context before compiling one checkout. The artifact preserves trust provenance instead of flattening authority and reasoning context into one channel.",
-    href: "./prototypes/05-split-projection/index.html",
-    date: "2026-09-05",
-    tags: ["trust-boundary", "projection", "prompt-injection", "provenance", "dual-consumption"],
-    killCriterion: "If mixed-trust context can add capabilities, or the split is merely visual while runtime assembly derives authority from context elsewhere, the prototype fails."
-  },
-  {
-    id: "06",
-    title: "Delegation trace",
-    status: "horizon",
-    question: "Can an upstream delegation protocol or authority chain be compiled into one execution-specific checkout without losing provenance or narrowing semantics?",
-    description: "Conditional follow-up. Rather than inventing delegation rules, ingest an APS/OAuth-shaped delegation chain and materialize the effective execution authority, then compare it with isolated authorization logs or authority graphs.",
-    href: null,
-    date: "conditional",
-    tags: ["delegation", "APS", "multi-agent", "auditability"],
-    killCriterion: "Do not build unless the earlier prototypes demonstrate value beyond an ordinary governance dashboard."
-  }
+  { id:"00", title:"Static boundary simulator", status:"baseline", question:"Can the checkout metaphor be made concrete enough to interact with?", description:"Historical baseline for making the metaphor visible.", href:"./prototype/index.html", date:"2026-09-05", tags:["baseline","procurement","static"], killCriterion:"None. Historical baseline only." },
+  { id:"01", title:"Authority legibility test", status:"preserved", question:"Can developers reason about effective agent authority more reliably from a materialized checkout than from policy/configuration alone?", description:"Raw policy beside materialized checkout, revisions, diffs and effect decisions.", href:"./prototypes/01-legibility/index.html", date:"2026-09-05", tags:["legibility","diff","falsification"], killCriterion:"If the checkout tells a developer nothing useful beyond underlying policy/configuration, narrow or stop." },
+  { id:"01.1", title:"Single-artifact dual consumption", status:"working", question:"Can one task-scoped checkout artifact be consumed by both the human inspector and runtime without parallel hidden authority state?", description:"Policy, task, delegation and grants compile into checkout.json; viewer, diff and runtime all consume the same artifact.", href:"./prototypes/01.1-compiled-checkout/index.html", date:"2026-09-05", tags:["dual-consumption","runtime-manifest","legibility","artifact"], killCriterion:"If either consumer depends on separate hardcoded authority state, or the shared artifact adds no reasoning value, narrow or stop." },
+  { id:"02", title:"Authority research board", status:"reading surface", question:"Where does Authority Checkout sit in the 2026 agent-authority landscape, and which claims remain weak?", description:"Static research board with canonical semantic state and derived map/timeline views.", href:"./prototypes/02-research-board/index.html", date:"2026-09-05", tags:["research","prior-art","landscape","br-ai-nstorm"], killCriterion:"None. The board tracks evidence; it does not validate the architecture." },
+  { id:"03", title:"Break the Checkout", status:"adversarial proof room", question:"Will independent people or LLMs produce useful, reviewable counterexamples?", description:"Bounded context out, structured proof back, human review before any finding becomes accepted project evidence.", href:"./prototypes/03-break-the-checkout/index.html", date:"2026-09-05", tags:["adversarial","falsification","proof","br-ai-nstorm"], killCriterion:"If participants mostly return generic critique or non-reproducible claims, do not expand the infrastructure." },
+  { id:"04", title:"Live authority drift", status:"working", question:"When does a derived checkout stop being trustworthy after upstream authority changes?", description:"Classifies fields as SNAPSHOT_SAFE, LIVE_REFERENCE or INVALIDATING and tests revocation, reclassification and expiry.", href:"./prototypes/04-live-authority-drift/index.html", date:"2026-09-05", tags:["staleness","revocation","freshness","runtime"], killCriterion:"If runtime trusts invalid stale state or humans cannot see what became stale, narrow or stop." },
+  { id:"05", title:"Split projection / trust boundary", status:"working", question:"Can hostile-influenced context shape reasoning without expanding effective authority?", description:"Separates authoritative control-plane inputs from mixed-trust task, memory, retrieval and tool-output context inside one checkout.", href:"./prototypes/05-split-projection/index.html", date:"2026-09-05", tags:["trust-boundary","projection","prompt-injection","provenance"], killCriterion:"If mixed-trust context can add capabilities, or the split is merely visual, the prototype fails." },
+  { id:"06", title:"Approval fatigue / effect-gate failure", status:"working", question:"Does a human approval gate remain a meaningful security boundary under repetition, ambiguity and volume?", description:"Control, fatigue and adversarial queues measure whether a prohibited effect gets approved as repetitive review turns into habit. The checkout remains available for inspection throughout.", href:"./prototypes/06-approval-fatigue/index.html", date:"2026-09-05", tags:["approval-fatigue","human-in-the-loop","effect-gate","falsification"], killCriterion:"If prohibited effects are routinely approved under load, stop treating REQUIRE_APPROVAL as equivalent to a reliable security control; determinize what policy can decide and reserve humans for ambiguity." },
+  { id:"07", title:"Delegation trace", status:"horizon", question:"Can an upstream delegation protocol or authority chain be compiled into one execution-specific checkout without losing provenance or narrowing semantics?", description:"Conditional APS/OAuth-shaped follow-up; treat delegation as upstream semantics rather than inventing a rival protocol.", href:null, date:"conditional", tags:["delegation","APS","multi-agent","auditability"], killCriterion:"Do not build until APS positioning is resolved and earlier prototypes show value beyond an ordinary governance dashboard." }
 ];
