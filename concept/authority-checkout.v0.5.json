@@ -1,0 +1,65 @@
+{
+  "schema": "authority-checkout/project-concept/v0.5",
+  "project": {
+    "name": "Authority Checkout",
+    "status": "exploratory",
+    "supersedes": "authority-checkout/project-concept/v0.4",
+    "type": ["runtime projection experiment", "dual-consumption artifact research", "legibility research"],
+    "tagline": "One task-scoped authority artifact for runtime assembly and human inspection."
+  },
+  "reframe": {
+    "previous_center": "compiled runtime projection",
+    "current_center": "single-artifact dual consumption",
+    "reason": "Session 04 established that policy projection and compilation already exist in shipped systems such as Microsoft Purview. Compilation itself is therefore not a defensible novelty claim. The surviving architectural hypothesis is that one execution-scoped artifact can be consumed both by runtime assembly/evaluation and by humans reasoning about effective authority.",
+    "research_question": "Can one task-scoped derived authority artifact serve both runtime assembly and human reasoning without either consumer relying on parallel hidden authority state?",
+    "kill_criterion": "If the runtime or the human view needs separate hardcoded authority state, or if the shared artifact adds no measurable reasoning value, the checkout abstraction should narrow or stop."
+  },
+  "principles": [
+    "The checkout is never authoritative; canonical upstream systems and live effect gates always win.",
+    "Source policy is not the checkout.",
+    "The checkout is not the execution trace.",
+    "The human UI is only a rendering of the same artifact the runtime consumes.",
+    "Parallel hardcoded permission state is architectural drift.",
+    "Stable facts may be materialized; mutable or irreversible decisions may remain live references."
+  ],
+  "surviving_hypothesis": {
+    "statement": "A single derived, task-scoped authority artifact may be useful precisely because the runtime and a human inspector consume the same object.",
+    "not_claimed": [
+      "compiled policy projection is novel",
+      "staleness invalidation is unsolved in general",
+      "pre-execution policy enforcement is novel",
+      "agent identity governance is novel",
+      "DLP or information-governance enforcement for agents is novel",
+      "Authority Checkout replaces Entra, Purview, IAM, policy engines or delegation protocols"
+    ]
+  },
+  "input_taxonomy": [
+    "identity / principal / entitlement facts",
+    "information-governance constraints",
+    "application and workflow semantics",
+    "delegation / expiry / revocation references"
+  ],
+  "prototype_01_1": {
+    "path": "prototypes/01.1-compiled-checkout/index.html",
+    "compiler_contract": "compileCheckout(inputs, approvedGrants)",
+    "output_schema": "authority-checkout/runtime-manifest/v0.1",
+    "consumers": ["human viewer", "computed artifact diff", "generic simulated runtime evaluator"],
+    "invariant": "Changing source inputs changes checkout.json; viewer, diff and runtime derive from checkout.json rather than separate permission constants."
+  },
+  "session_06_correction": {
+    "finding": "Prototype 01.1 originally violated its own runtime_rule: sources.policy was decorative, effect evaluation hardcoded action names, and the artifact diff was literal text.",
+    "consequence": "The prototype was repaired before treating Break the Checkout as an external challenge. This failure is retained in the learning journey because it is direct evidence of the exact architectural drift the project claims to detect."
+  },
+  "purview_boundary": {
+    "finding": "Microsoft Purview already computes and enforces policy projections for supported AI interactions and therefore falsifies the broad claim that compiling policy into an AI-facing projection is novel.",
+    "what_remains_open": "Whether one human-inspectable execution-scoped artifact spanning effective authority can serve both runtime and human reasoning better than separate control-plane views.",
+    "integration_status": "parked until the legibility / dual-consumption kill criterion survives with local fixtures"
+  },
+  "next_questions": [
+    "Does dual consumption measurably improve developer reasoning compared with inspecting source policy/configuration directly?",
+    "Which fields can be materialized safely and which must remain live references?",
+    "How should a checkout expose freshness and invalidation without becoming a stale second source of truth?",
+    "Does an APS-shaped delegation chain reduce Authority Checkout to a useful projection/view layer rather than an independent authority model?",
+    "Can adversarial reviewers produce reproducible counterexamples against the dual-consumption invariant?"
+  ]
+}
