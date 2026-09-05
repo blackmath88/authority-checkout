@@ -43,73 +43,25 @@
   </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <div class="eyebrow">Authority Checkout / research index</div>
-    <h1>Make agent authority inspectable.</h1>
-    <p class="lede">This repository is both a working notebook and a sequence of small prototypes. Each prototype exists to answer one architectural question, and failed assumptions are preserved rather than edited out of the story.</p>
-    <div class="thesis">One execution-scoped authority artifact should serve both runtime and human inspection — while remaining derived, freshness-aware and explicit about which inputs are trusted to define authority.</div>
-  </div>
-</header>
-
+<header><div class="wrap"><div class="eyebrow">Authority Checkout / research index</div><h1>Make agent authority inspectable.</h1><p class="lede">This repository is both a working notebook and a sequence of small prototypes. Each prototype exists to answer one architectural question, and failed assumptions are preserved rather than edited out of the story.</p><div class="thesis">One execution-scoped authority artifact should serve both runtime and human inspection — while remaining derived, freshness-aware, explicit about trust provenance, and honest about the limits of human approval.</div></div></header>
 <main class="wrap">
-  <div class="section-head">
-    <h2>Working prototypes</h2>
-    <p>Build questions, not roadmap fiction.</p>
-  </div>
+  <div class="section-head"><h2>Working prototypes</h2><p>Build questions, not roadmap fiction.</p></div>
   <section class="experiments" id="experiments"></section>
-
-  <div class="section-head">
-    <h2>Research trail</h2>
-    <p>Concept, lineage, limits and learning history.</p>
-  </div>
+  <div class="section-head"><h2>Research trail</h2><p>Concept, lineage, limits and learning history.</p></div>
   <section class="resources">
-    <a class="resource" href="./docs/journey/index.html">
-      <div><h3>Learning journey</h3><p>Chronological record of assumptions, challenges, corrections and open questions.</p></div><span>Open journal →</span>
-    </a>
-    <a class="resource" href="./docs/lineage.md">
-      <div><h3>Lineage</h3><p>Memory-as-middleware, Delta-style materialization, authority projection and the shared architectural move.</p></div><span>Open lineage →</span>
-    </a>
-    <a class="resource" href="./concept/authority-checkout.v0.6.json">
-      <div><h3>Current concept</h3><p>The machine-readable v0.6 project model: dual consumption, freshness and split trust provenance.</p></div><span>Open JSON →</span>
-    </a>
-    <a class="resource" href="./docs/limitations.md">
-      <div><h3>Limitations</h3><p>Where the checkout metaphor breaks: drift, trust collapse, approval fatigue, reconnaissance and more.</p></div><span>Open limits →</span>
-    </a>
-    <a class="resource" href="./docs/related-work.md">
-      <div><h3>Related work</h3><p>Prior art and adjacent systems the project must not accidentally rediscover.</p></div><span>Open map →</span>
-    </a>
-    <a class="resource" href="./docs/roadmap.md">
-      <div><h3>Question-driven roadmap</h3><p>What the prototypes have killed, what survives, and which experiment comes next.</p></div><span>Open roadmap →</span>
-    </a>
+    <a class="resource" href="./docs/journey/index.html"><div><h3>Learning journey</h3><p>Chronological record of assumptions, challenges, corrections and open questions.</p></div><span>Open journal →</span></a>
+    <a class="resource" href="./docs/lineage.md"><div><h3>Lineage</h3><p>Memory-as-middleware, Delta-style materialization, authority projection and the shared architectural move.</p></div><span>Open lineage →</span></a>
+    <a class="resource" href="./concept/authority-checkout.v0.7.json"><div><h3>Current concept</h3><p>The machine-readable v0.7 project model: dual consumption, freshness, trust provenance and effect-gate honesty.</p></div><span>Open JSON →</span></a>
+    <a class="resource" href="./docs/limitations.md"><div><h3>Limitations</h3><p>Where the checkout metaphor breaks: drift, trust collapse, approval fatigue, reconnaissance and more.</p></div><span>Open limits →</span></a>
+    <a class="resource" href="./docs/related-work.md"><div><h3>Related work</h3><p>Prior art and adjacent systems the project must not accidentally rediscover.</p></div><span>Open map →</span></a>
+    <a class="resource" href="./docs/roadmap.md"><div><h3>Question-driven roadmap</h3><p>What the prototypes have killed, what survives, and what evidence comes next.</p></div><span>Open roadmap →</span></a>
   </section>
 </main>
-
-<footer>
-  <div class="wrap">Authority Checkout is an exploratory research project. Prototype results should change the architecture when the evidence says they should.</div>
-</footer>
-
+<footer><div class="wrap">Authority Checkout is an exploratory research project. Prototype results should change the architecture when the evidence says they should.</div></footer>
 <script src="./experiments.js"></script>
 <script>
-  const root = document.getElementById('experiments');
-  (window.AUTHORITY_CHECKOUT_EXPERIMENTS || []).forEach(exp => {
-    const article = document.createElement('article');
-    article.className = 'experiment';
-    const action = exp.href
-      ? `<a class="action live" href="${exp.href}">Open prototype →</a>`
-      : `<div class="action disabled">${exp.status === 'next' ? 'Next build' : 'Conditional'}</div>`;
-    article.innerHTML = `
-      <div><div class="num">${exp.id}</div><div class="status">${exp.status}</div></div>
-      <div>
-        <h3>${exp.title}</h3>
-        <p class="question">${exp.question}</p>
-        <p class="desc">${exp.description}</p>
-        <div class="tags">${exp.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
-        <div class="kill"><strong>Kill criterion:</strong> ${exp.killCriterion}</div>
-      </div>
-      ${action}`;
-    root.appendChild(article);
-  });
+  const root=document.getElementById('experiments');
+  (window.AUTHORITY_CHECKOUT_EXPERIMENTS||[]).forEach(exp=>{const article=document.createElement('article');article.className='experiment';const action=exp.href?`<a class="action live" href="${exp.href}">Open prototype →</a>`:`<div class="action disabled">${exp.status==='next'?'Next build':'Conditional'}</div>`;article.innerHTML=`<div><div class="num">${exp.id}</div><div class="status">${exp.status}</div></div><div><h3>${exp.title}</h3><p class="question">${exp.question}</p><p class="desc">${exp.description}</p><div class="tags">${exp.tags.map(tag=>`<span class="tag">${tag}</span>`).join('')}</div><div class="kill"><strong>Kill criterion:</strong> ${exp.killCriterion}</div></div>${action}`;root.appendChild(article)});
 </script>
 </body>
 </html>
