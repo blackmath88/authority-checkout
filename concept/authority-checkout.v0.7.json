@@ -1,0 +1,69 @@
+{
+  "schema": "authority-checkout/project-concept/v0.7",
+  "project": {
+    "name": "Authority Checkout",
+    "status": "exploratory",
+    "supersedes": "authority-checkout/project-concept/v0.6",
+    "tagline": "One execution-scoped authority artifact for runtime assembly and human inspection — with explicit freshness, trust provenance and effect-gate limits."
+  },
+  "research_question": "Can one task-scoped derived authority artifact serve both runtime assembly and human reasoning, remain honest when upstream state changes, preserve which inputs may define authority, and avoid treating human approval as deterministic enforcement?",
+  "surviving_claim": {
+    "center": "single-artifact dual consumption",
+    "extensions": ["freshness legibility", "trust-provenance preservation", "effect-gate honesty"]
+  },
+  "core_principles": [
+    "the checkout is never authoritative",
+    "runtime and human inspection consume the same artifact",
+    "live or invalidating upstream state must not be silently frozen",
+    "mixed-trust context may influence reasoning but may not expand authority",
+    "human approval is not equivalent to deterministic policy",
+    "policy-resolvable effects should be determinized before escalation",
+    "structural validity is not acceptance"
+  ],
+  "effect_gate_model": {
+    "invariant": "EG-01: human approval is not a deterministic security control unless decision quality remains acceptable under realistic approval load.",
+    "design_hypothesis": "Deterministically decidable policy should produce machine allow/deny; human review should be reserved for genuine ambiguity.",
+    "prototype": "prototypes/06-approval-fatigue/index.html",
+    "measures": ["dangerous-action approval", "benign-action rejection", "response time", "sequence position", "checkout inspection count"]
+  },
+  "prototypes": {
+    "01": "authority legibility",
+    "01.1": "single-artifact dual consumption",
+    "02": "research board",
+    "03": "Break the Checkout adversarial proof room",
+    "04": "live authority drift",
+    "05": "split projection / trust boundary",
+    "06": "approval fatigue / effect-gate failure",
+    "07": "delegation trace horizon"
+  },
+  "adversarial_invariants": {
+    "AC-04": "prove human view and runtime do not consume the same artifact",
+    "AC-05": "make runtime trust stale authority",
+    "AC-06": "make hostile-influenced context mint authority",
+    "AC-07": "exhaust the reviewer until a prohibited effect is approved"
+  },
+  "known_challenges": [
+    "ambient authority beneath the checkout",
+    "stale authority and revocation drift",
+    "hostile-influenced context crossing into authority derivation",
+    "approval fatigue turning human effect gates into rubber stamps",
+    "legibility becoming attacker reconnaissance",
+    "artifact production without actual consumption",
+    "delegation and confused-deputy semantics"
+  ],
+  "claims_not_to_make": [
+    "compiled policy projection is novel",
+    "pre-execution deterministic enforcement is novel",
+    "human-readable authority dashboards are novel",
+    "agent identity governance is novel",
+    "staleness invalidation is unsolved generally",
+    "trusted/untrusted context separation is novel",
+    "human approval is inherently reliable",
+    "Authority Checkout replaces IAM, APS, OAuth, Purview, policy engines, sandboxes or capability systems"
+  ],
+  "next_phase": {
+    "name": "evidence runs before more architecture",
+    "goal": "Run people and external LLMs against Prototypes 01.1, 04, 05 and 06 through Break the Checkout before adding another conceptual layer.",
+    "parallel_blocker": "Resolve APS positioning as upstream delegation semantics versus rival before building delegation trace."
+  }
+}
