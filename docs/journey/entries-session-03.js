@@ -1,0 +1,80 @@
+window.AUTHORITY_CHECKOUT_JOURNEY.push(
+  {
+    id: "017",
+    date: "2026-09-05",
+    stage: "research",
+    title: "The security landscape is converging on pre-execution control.",
+    assumption: "Authority Checkout might be unusually focused on constraining actions before they execute.",
+    challenge: "Current SOC, identity and governance work increasingly emphasizes deterministic, policy-bound controls before consequential actions, especially as attack speed increases and compromised actors may use legitimate access.",
+    learning: "Pre-execution control validates the direction but cannot be the project's novelty claim. It is becoming table stakes across agent security.",
+    changed: "The project treats external deterministic enforcement as upstream infrastructure and focuses on what runtime artifact should be handed to an execution.",
+    open: "Which parts of the checkout can safely be materialized ahead of time and which must remain live authorization references?",
+    verification: "research synthesis; primary sources should back publication claims",
+    tags: ["pre-execution", "SOC", "enforcement"]
+  },
+  {
+    id: "018",
+    date: "2026-09-05",
+    stage: "prior-art",
+    title: "Agent Passport System is a closer neighbour than expected.",
+    assumption: "Delegation narrowing, revocation and reversibility were mostly open design space for this project.",
+    challenge: "The active APS draft formalizes delegated authority with monotonic narrowing, revocation, bounded approvals and reversibility-related constraints. It is substantially more rigorous than the prototype's home-grown authority model.",
+    learning: "Authority Checkout should not invent its own delegation protocol. APS-like protocols can become upstream authority sources whose result is materialized into an execution-specific checkout.",
+    changed: "Prototype 02 is reframed from inventing delegation to ingesting an external delegation chain and compiling its effective authority.",
+    open: "Does an APS-shaped chain compile into a useful runtime manifest without losing its live revocation semantics?",
+    verification: "verified at concept level against the active IETF Internet-Draft; draft status, not standard",
+    tags: ["APS", "delegation", "prior-art"]
+  },
+  {
+    id: "019",
+    date: "2026-09-05",
+    stage: "reframe",
+    title: "Legibility alone is not enough to distinguish the project.",
+    assumption: "The project's strongest remaining contribution might be that humans cannot otherwise see total effective agent authority.",
+    challenge: "Existing products and projects already expose effective access, agent topology, delegation graphs, audit trails and revocation controls.",
+    learning: "A nicer permissions dashboard is not enough. The checkout needs an architectural role beyond visualization.",
+    changed: "The research center moves from authority visualization to a compiled runtime projection consumed by both humans and the execution runtime.",
+    open: "Does using the same artifact for runtime and inspection produce enough value to survive the kill criterion?",
+    verification: "verified that adjacent authority dashboards/graphs exist; novelty remains a hypothesis",
+    tags: ["legibility", "dashboard", "reframe"]
+  },
+  {
+    id: "020",
+    date: "2026-09-05",
+    stage: "lineage",
+    title: "The Delta analogy only matters if the checkout is actually used for execution.",
+    assumption: "A materialized view of authority was already enough to make the Delta checkout analogy meaningful.",
+    challenge: "Delta's worktree matters because work happens against the materialized representation. A dashboard that merely displays policy output is not equivalent.",
+    learning: "The checkout must become a real runtime manifest: compile upstream state into one execution artifact, then let both the human viewer and runtime consume it.",
+    changed: "Prototype 01 is preserved as the legibility experiment; Prototype 01.1 introduces compileCheckout() and checkout.json as the common artifact.",
+    open: "Can a real implementation assemble tools, memory and credentials from the manifest without recreating hidden ambient authority underneath?",
+    verification: "accepted architectural reframe",
+    tags: ["Delta", "runtime", "manifest"]
+  },
+  {
+    id: "021",
+    date: "2026-09-05",
+    stage: "architecture",
+    title: "Policy, checkout and execution log are three different objects.",
+    assumption: "The checkout could be treated loosely as whatever represented current permissions.",
+    challenge: "Upstream policy expresses rules; a checkout should describe one compiled execution; logs and receipts describe what subsequently happened. Conflating these loses the source-of-truth distinction that motivated the project.",
+    learning: "SOURCE POLICY ≠ CHECKOUT ≠ EXECUTION TRACE. The checkout is derived, versioned and disposable, while canonical policy and identity stay upstream.",
+    changed: "v0.4 defines explicit compile inputs, a runtime-manifest schema and downstream consumers.",
+    open: "Which live references must remain in the manifest to prevent stale derived authority from becoming a second source of truth?",
+    verification: "accepted design principle",
+    tags: ["source-of-truth", "compiled", "audit"]
+  },
+  {
+    id: "022",
+    date: "2026-09-05",
+    stage: "direction",
+    title: "ATProto remains a protocol-layer intuition, not a dependency.",
+    assumption: "ATProto might directly supply the identity model for Authority Checkout.",
+    challenge: "The current project does not need decentralized identity to test runtime projection, and ATProto's public-repository model is mismatched with sensitive entitlement detail.",
+    learning: "The useful ATProto inspiration is separation of identity, hosting and signed state. It may later inform portable identifiers, attestations or references, but it should not enter Prototype 01.1.",
+    changed: "ATProto stays in the horizon section of v0.4 rather than the implementation path.",
+    open: "Could a future checkout carry a portable signed authority-attestation reference without publishing sensitive authority itself?",
+    verification: "horizon hypothesis",
+    tags: ["ATProto", "identity", "protocol"]
+  }
+);
