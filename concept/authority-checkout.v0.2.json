@@ -1,0 +1,112 @@
+{
+  "schema": "authority-checkout/project-concept/v0.2",
+  "project": {
+    "name": "Authority Checkout",
+    "repo": "authority-checkout",
+    "status": "exploratory",
+    "supersedes": "authority-checkout/project-concept/v0.1",
+    "type": ["reference architecture", "research prototype", "legibility experiment"],
+    "tagline": "Make agent authority inspectable."
+  },
+  "reframe": {
+    "previous_center": "bounded agent authority as a defensive architecture",
+    "current_center": "legibility of effective agent authority",
+    "research_question": "Can developers reason about an agent's effective authority more reliably when that authority is materialized as an inspectable, diffable object?",
+    "kill_criterion": "If the materialized checkout tells a developer nothing useful beyond what the underlying policy and entitlement configuration already tells them, the project is only a visualization layer and should be narrowed or stopped."
+  },
+  "not_claimed": [
+    "This solves prompt injection.",
+    "This automatically derives perfect least privilege.",
+    "This is a new security primitive.",
+    "This replaces IAM, capability systems, policy engines, sandboxes or reference monitors.",
+    "This introduces novel out-of-model enforcement; deterministic external enforcement is established prior art.",
+    "This can literally snapshot all external reality.",
+    "This addresses infrastructure-level sandbox escape or credential harvesting by itself.",
+    "This would have prevented the July 2026 OpenAI/Hugging Face incident.",
+    "This makes autonomous agents safe."
+  ],
+  "core_model": {
+    "canonical_state": {
+      "description": "Authoritative application and organizational state outside the model."
+    },
+    "projection": {
+      "description": "The checkout-like, inspectable materialization exposed for a task.",
+      "properties": ["diffable", "versionable", "revocable", "cheap to re-issue", "attributable"],
+      "covers": [
+        "visible resources",
+        "projected memory",
+        "read capabilities",
+        "tool registrations",
+        "provenance",
+        "task",
+        "identity and delegation context",
+        "expiry and freshness"
+      ]
+    },
+    "effect_gate": {
+      "description": "A live authorization path for consequential actions; deliberately not treated as a checkout or merge operation.",
+      "properties": ["always live", "no assumed rollback", "re-authorized at execution"],
+      "covers": ["send", "publish", "purchase", "transfer", "delete", "payment.execute"],
+      "outcomes": ["ALLOW", "DENY", "REQUIRE_APPROVAL", "NOT_AVAILABLE"]
+    },
+    "pause_authority": {
+      "description": "The explicit ability to halt, suspend or revoke an agent's runtime authority, including who may invoke it and through which path.",
+      "status": "open research primitive",
+      "questions": [
+        "Who can pause the agent?",
+        "Can automated monitoring invoke a pause directly?",
+        "What authority is revoked when paused?",
+        "How quickly does revocation propagate?",
+        "How is restart authorized?"
+      ]
+    },
+    "delegation": {
+      "description": "Authority propagation across agent-to-agent and agent-to-tool chains.",
+      "status": "early research candidate rather than late roadmap item",
+      "questions": [
+        "What authority was inherited?",
+        "What authority narrowed or expanded at each hop?",
+        "Who is attributable for the final effect?",
+        "Can the complete chain be inspected as one object or trace?"
+      ]
+    }
+  },
+  "first_demo": {
+    "form": "single-page browser prototype",
+    "scenario": "procurement — compare supplier quote",
+    "runs": ["clean", "adversarial action sequence"],
+    "agent_behavior": "hardcoded first so the representation can be tested independently from model variability; optional LLM second",
+    "layout": {
+      "left": "current checkout: resources, capabilities, provenance, expiry",
+      "right": "agent transcript or attempted action sequence",
+      "bottom": "live effect decisions",
+      "centerpiece": "checkout diff between revisions"
+    },
+    "first_measure": "Can a developer explain what changed in effective authority from the checkout diff without reading the underlying policy implementation?"
+  },
+  "research_priorities": [
+    "checkout legibility",
+    "checkout diff legibility",
+    "projection versus live effect authorization",
+    "delegation-chain auditability",
+    "expiry and stale authority",
+    "pause authority",
+    "authority expansion requests"
+  ],
+  "incident_boundary": {
+    "july_2026_openai_hugging_face": {
+      "relevance": "inspiration and boundary lesson, not a claimed prevented incident",
+      "verified_lesson": "The incident crossed infrastructure trust boundaries through sandbox escape, exposed execution paths, credentials and lateral movement. Authority Checkout currently models an application/runtime authority representation above those infrastructure controls.",
+      "transferable_questions": [
+        "What ambient authority exists outside the model-visible checkout?",
+        "When does task authority expire?",
+        "Who can pause automated work after monitoring detects danger?"
+      ]
+    }
+  },
+  "success_criteria": {
+    "primary": "The checkout representation exposes effective authority in a way that is materially easier to inspect, compare and explain than the policy inputs alone.",
+    "secondary": "Delegation, expiry and authority changes can be represented without implying enforcement guarantees the prototype does not provide.",
+    "documentation": "Every reframe preserves the assumption that failed, the evidence that challenged it and the resulting design change."
+  }
+}
