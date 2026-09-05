@@ -151,7 +151,25 @@ Three project-facing claims stay unresolved on purpose:
 - `as-legibility` — the claimed legibility gap is not yet verified.
 - `as-reasoning` — whether materialization actually helps developer reasoning remains the kill criterion.
 
-### Prototype 03 — delegation trace
+### Prototype 03 — Break the Checkout
+
+Open `prototypes/03-break-the-checkout/index.html`.
+
+A project-specific adaptation of the **br-ai-nstorm** participation pattern for adversarial falsification rather than collective ideation.
+
+The room exposes bounded architectural claims and fixtures, exports a structured context package to any person or LLM, accepts a bounded proof package back, and keeps imported evidence in a browser-local review queue.
+
+The rule is explicit:
+
+> **Agents may propose a break. A break only counts after reproducible proof is reviewed.**
+
+The prototype deliberately does **not** provide a real security sandbox or vulnerable infrastructure target. Participants are trying to falsify the model: find undeclared runtime authority, stale authority acceptance, effect-gate bypasses, or evidence that the checkout is only a UI picture rather than the runtime artifact.
+
+A structurally valid proof package is not canonical truth. Local review does not mutate the Research Board or the repository.
+
+**Kill criterion:** if adversarial participants mostly return generic critique or non-reproducible claims, do not add backend/MCP infrastructure for this workflow.
+
+### Prototype 04 — delegation trace
 
 Conditional horizon. Rather than inventing delegation semantics, ingest an APS/OAuth-shaped chain and compile its effective authority into one execution-specific checkout.
 
@@ -186,7 +204,12 @@ Potential upstream source for delegated authority, narrowing, revocation and act
 
 ### br-ai-nstorm
 
-The research board borrows one architectural rule from the sibling collective-reasoning prototype: **semantic state is canonical; visual projections never write**. That prevents a force layout from silently becoming the ontology.
+Two patterns are borrowed from the sibling collective-reasoning prototype:
+
+1. **Semantic state is canonical; visual projections never write.** This powers the Research Board.
+2. **Bounded context out, bounded contribution back, explicit provenance and human review.** This powers Break the Checkout.
+
+The br-ai-nstorm repository itself stays generic and unchanged.
 
 ### AT Protocol
 
@@ -213,6 +236,7 @@ Current modules:
 - `entries-session-02.js` — legibility / enforcement reframe
 - `entries-session-03.js` — APS, existing authority dashboards, compiled-runtime reframe
 - `entries-session-04.js` — research-board mapping and explicit unresolved claims
+- `entries-session-05.js` — adversarial proof-room adaptation from br-ai-nstorm
 
 ## Concept history
 
@@ -225,8 +249,8 @@ concept/authority-checkout.v0.4.json   v0.4 — compiled runtime manifest
 
 ## Current status
 
-**Session 04 — landscape mapped, experiment still open**
+**Session 05 — the project can now be attacked, not just demonstrated**
 
-The board makes the crowded landscape legible, but it does not answer the central question. Prototype 01 / 01.1 remains the falsifiable work.
+Prototype 01 / 01.1 remains the core falsifiable architecture experiment. Prototype 02 tracks the outside landscape. Prototype 03 opens a bounded participation aperture so independent agents and people can try to produce evidence that the architecture is wrong.
 
-> **Can `checkout.json` become a real execution boundary artifact that improves human reasoning without quietly recreating ambient authority underneath it?**
+> **Can `checkout.json` become a real execution boundary artifact that improves human reasoning without quietly recreating ambient authority underneath it — and can adversarial reviewers prove when it fails?**
