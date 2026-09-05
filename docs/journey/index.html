@@ -30,6 +30,7 @@
     .block p { margin:0; line-height:1.55; font-size:15px; }
     .tags { margin-top:18px; display:flex; gap:6px; flex-wrap:wrap; }
     .tag { font-size:11px; border:1px solid var(--line); border-radius:999px; padding:4px 8px; color:var(--muted); }
+    .evidence { margin-top:18px; padding-top:14px; border-top:1px dashed var(--line); font-size:12px; color:var(--muted); line-height:1.55; }
     footer { border-top:1px solid var(--line); padding:28px 0 48px; color:var(--muted); font-size:13px; }
     @media (max-width:760px) { article { grid-template-columns:1fr; } .grid { grid-template-columns:1fr; } header { padding-top:46px; } }
   </style>
@@ -40,7 +41,7 @@
       <div class="kicker">Authority Checkout / learning journal</div>
       <h1>What I thought. What broke. What changed.</h1>
       <p class="intro">This is not a polished theory. It is a chronological record of an idea being challenged: wrong assumptions, missing architectural knowledge, reframings, and the questions that remain open.</p>
-      <div class="note">The journal is intentionally modular. Entries live in <code>entries.js</code>; this page only renders them. New critiques or experiment results should add or revise an entry rather than rewrite the whole story.</div>
+      <div class="note">The journal is intentionally modular. The base entries live in <code>entries.js</code>; later sparring sessions append their own files. Critiques are inputs, not truth, so newer entries may include provenance and verification state.</div>
     </div>
   </header>
 
@@ -54,6 +55,7 @@
   </footer>
 
   <script src="./entries.js"></script>
+  <script src="./entries-session-02.js"></script>
   <script>
     const entries = window.AUTHORITY_CHECKOUT_JOURNEY || [];
     const journey = document.getElementById('journey');
@@ -64,6 +66,9 @@
       journey.innerHTML = '';
       entries.filter(e => filter === 'all' || e.stage === filter).forEach(e => {
         const article = document.createElement('article');
+        const evidence = e.source || e.verification
+          ? `<div class="evidence"><strong>Evidence note:</strong> ${e.source || 'not recorded'}${e.verification ? `<br><strong>Status:</strong> ${e.verification}` : ''}</div>`
+          : '';
         article.innerHTML = `
           <div class="meta"><strong>#${e.id}</strong><br>${e.date}<br><span class="stage">${e.stage}</span></div>
           <div>
@@ -76,6 +81,7 @@
               <div class="block" style="grid-column:1/-1"><div class="label">Still open</div><p>${e.open}</p></div>
             </div>
             <div class="tags">${e.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+            ${evidence}
           </div>`;
         journey.appendChild(article);
       });
