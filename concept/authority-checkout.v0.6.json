@@ -1,0 +1,88 @@
+{
+  "schema": "authority-checkout/project-concept/v0.6",
+  "project": {
+    "name": "Authority Checkout",
+    "status": "exploratory",
+    "supersedes": "authority-checkout/project-concept/v0.5",
+    "type": ["dual-consumption authority artifact", "runtime projection experiment", "legibility research"],
+    "tagline": "One execution-scoped authority artifact for runtime assembly and human inspection — with explicit freshness and trust provenance."
+  },
+  "research_question": "Can one task-scoped derived authority artifact serve both runtime assembly and human reasoning, remain honest when upstream state changes, and preserve the boundary between authoritative control-plane state and hostile-influenced reasoning context?",
+  "surviving_claim": {
+    "center": "single-artifact dual consumption",
+    "extensions": ["freshness legibility", "trust-provenance preservation"],
+    "statement": "The same execution-scoped artifact should be consumed by the runtime and the human inspector, while remaining visibly derived from canonical systems and refusing to treat mixed-trust context as an authority source."
+  },
+  "core_principles": [
+    "the checkout is never authoritative",
+    "source policy is not the checkout",
+    "the checkout is not the execution trace",
+    "runtime and human inspection consume the same artifact",
+    "live or invalidating upstream state must not be silently frozen",
+    "mixed-trust context may influence reasoning but may not expand authority",
+    "provenance and trust class are part of the inspectable artifact",
+    "structural validity is not acceptance"
+  ],
+  "projection_model": {
+    "authorityProjection": {
+      "role": "state permitted to define effective authority",
+      "inputs": ["identity", "delegation", "policy", "approved grants"],
+      "examples": ["resources", "tools", "capabilities", "effect rules", "expiry", "authority provenance"]
+    },
+    "contextProjection": {
+      "role": "state permitted to influence reasoning but not mint authority",
+      "inputs": ["task interpretation", "memory", "retrieval", "tool output", "external content"],
+      "trust": "mixed / potentially hostile-influenced"
+    },
+    "invariant": "SP-01: hostile-influenced context may narrow, annotate or shape reasoning, but it may never expand effective authority."
+  },
+  "freshness_model": {
+    "SNAPSHOT_SAFE": "materialized value remains usable until checkout expiry",
+    "LIVE_REFERENCE": "checkout records a dependency but runtime re-reads the authoritative source at decision time",
+    "INVALIDATING": "upstream change makes dependent checkout decisions untrustworthy and requires recompile or equivalent refresh"
+  },
+  "prototypes": {
+    "01": "authority legibility",
+    "01.1": "single-artifact dual consumption",
+    "02": "research board",
+    "03": "Break the Checkout adversarial proof room",
+    "04": "live authority drift",
+    "05": "split projection / trust boundary",
+    "06": "delegation trace horizon"
+  },
+  "adversarial_invariants": {
+    "AC-04": "prove the human view and runtime do not consume the same artifact",
+    "AC-05": "make runtime trust stale authority after invalidating drift",
+    "AC-06": "make hostile-influenced context mint authority"
+  },
+  "known_challenges": [
+    "ambient authority beneath the checkout",
+    "stale authority and revocation drift",
+    "hostile-influenced context crossing into authority derivation",
+    "approval fatigue turning human effect gates into rubber stamps",
+    "legibility becoming attacker reconnaissance",
+    "dynamic authority expansion making the checkout too unstable to remain useful",
+    "artifact production without actual human/runtime consumption",
+    "delegation and confused-deputy semantics",
+    "hidden runtime paths that bypass the visible manifest"
+  ],
+  "claims_not_to_make": [
+    "compiled policy projection is novel",
+    "pre-execution deterministic enforcement is novel",
+    "human-readable authority dashboards are novel",
+    "agent identity governance is novel",
+    "staleness invalidation is unsolved generally",
+    "trusted/untrusted context separation is novel",
+    "Authority Checkout replaces IAM, APS, OAuth, Purview, policy engines, sandboxes or capability systems"
+  ],
+  "next_experiment": {
+    "name": "Approval Fatigue / Effect-Gate Failure",
+    "question": "Does a human approval gate remain a meaningful safety boundary as benign approval volume and ambiguity rise?",
+    "why_next": "Prototype 05 closes one structural input channel. The next exposed boundary is the human gate itself: technically correct policy can still fail operationally if reviewers become conditioned to approve."
+  },
+  "integration_policy": {
+    "Microsoft": "parked until local dual-consumption, freshness and trust-boundary experiments survive",
+    "APS": "treat as likely upstream delegation semantics; explicit viewing-layer-versus-rival decision still required",
+    "AIBOM": "possible later export format; not a current dependency"
+  }
+}
