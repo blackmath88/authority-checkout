@@ -56,6 +56,17 @@ window.AUTHORITY_CHECKOUT_EXPERIMENTS = [
   },
   {
     id: "04",
+    title: "Live authority drift",
+    status: "working",
+    question: "When does a derived checkout stop being trustworthy after upstream authority changes?",
+    description: "Adds time and mutable upstream state. The prototype classifies checkout fields as SNAPSHOT_SAFE, LIVE_REFERENCE or INVALIDATING, then applies delegation revocation, data reclassification and expiry events while showing source state, checkout state, drift and runtime decisions side by side.",
+    href: "./prototypes/04-live-authority-drift/index.html",
+    date: "2026-09-05",
+    tags: ["staleness", "revocation", "freshness", "runtime", "dual-consumption"],
+    killCriterion: "If developers cannot tell what is stale/live/invalidating, or runtime decisions still trust stale compiled state after an invalidating change, narrow or stop this line."
+  },
+  {
+    id: "05",
     title: "Delegation trace",
     status: "horizon",
     question: "Can an upstream delegation protocol or authority chain be compiled into one execution-specific checkout without losing provenance or narrowing semantics?",
@@ -63,6 +74,6 @@ window.AUTHORITY_CHECKOUT_EXPERIMENTS = [
     href: null,
     date: "conditional",
     tags: ["delegation", "APS", "multi-agent", "auditability"],
-    killCriterion: "Do not build unless Prototype 01.1 demonstrates value beyond an ordinary governance dashboard."
+    killCriterion: "Do not build unless the earlier prototypes demonstrate value beyond an ordinary governance dashboard."
   }
 ];
