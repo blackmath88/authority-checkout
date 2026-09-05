@@ -45,6 +45,17 @@ window.AUTHORITY_CHECKOUT_EXPERIMENTS = [
   },
   {
     id: "03",
+    title: "Break the Checkout",
+    status: "adversarial proof room",
+    question: "Will independent people or LLMs produce useful, reviewable counterexamples when the architectural invariant and required proof format are explicit?",
+    description: "A project-specific adaptation of the br-ai-nstorm participation pattern for falsification. Export a bounded challenge context into any LLM, return a structured proof package, and review it locally. Agents can propose a break; they cannot silently turn it into canonical truth.",
+    href: "./prototypes/03-break-the-checkout/index.html",
+    date: "2026-09-05",
+    tags: ["adversarial", "falsification", "proof", "br-ai-nstorm", "llm-aperture"],
+    killCriterion: "If adversarial participants mostly produce unverifiable claims, generic critique, or proofs that humans cannot reproduce, do not add backend/MCP infrastructure for this workflow."
+  },
+  {
+    id: "04",
     title: "Delegation trace",
     status: "horizon",
     question: "Can an upstream delegation protocol or authority chain be compiled into one execution-specific checkout without losing provenance or narrowing semantics?",
