@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ai.bridgework.authorityCheckout.breakContext",
+  "title": "Authority Checkout break context",
+  "type": "object",
+  "required": ["$type", "schemaVersion", "challenge", "materials", "apertureRules", "expectedOutput"],
+  "properties": {
+    "$type": { "const": "ai.bridgework.authorityCheckout.breakContext" },
+    "schemaVersion": { "const": "0.1" },
+    "challenge": {
+      "type": "object",
+      "required": ["id", "title", "invariant", "successCriterion", "requiredProof"]
+    },
+    "materials": { "type": "object" },
+    "apertureRules": { "type": "array", "items": { "type": "string" } },
+    "expectedOutput": { "type": "object" }
+  },
+  "additionalProperties": true
+}
