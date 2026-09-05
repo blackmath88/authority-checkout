@@ -2,67 +2,112 @@
 
 Authority Checkout intentionally sits on top of ideas that already exist. The project should avoid novelty claims that collapse under basic comparison.
 
+## Working position
+
+The current hypothesis is **not** that Authority Checkout introduces a new enforcement primitive.
+
+The working contribution is narrower:
+
+> Can effective agent authority be materialized as a human-inspectable, diffable object that improves debugging, governance and delegation reasoning?
+
+Deterministic enforcement outside the model is treated as prior art and infrastructure underneath this experiment.
+
 ## Delta-style checkout architecture
 
 The strongest conceptual inspiration is the separation between **authoritative state** and the **materialized working representation** used by an agent or thread.
 
 Authority Checkout generalizes that architectural inversion from software worktrees to agent context and effective authority.
 
-The analogy has limits: enterprise reality is live, distributed and often effectful rather than mergeable.
+The analogy has limits: enterprise reality is live, distributed and often effectful rather than mergeable. The v0.2 model therefore separates a checkout-like **projection** from a live **effect gate**.
+
+## CaMeL — Defeating Prompt Injections by Design
+
+CaMeL creates a protective system layer around the LLM, explicitly separates control and data flow, and uses capabilities to prevent unauthorized information flow. The published paper abstract reports solving **67% of AgentDojo tasks with provable security**.
+
+Authority Checkout does **not** duplicate CaMeL's per-value information-flow model or claim stronger enforcement. The experiment asks whether a task-scoped authority envelope can be materialized as a legible developer artifact.
+
+Reference: https://arxiv.org/abs/2503.18813
+
+## FIDES / Progent / RTBAS / FORGE and other out-of-band defenses
+
+Adjacent research uses deterministic reference monitors, capability checks, information-flow labels and out-of-band policy enforcement.
+
+Authority Checkout belongs to the same broad architectural family in the sense that security decisions should not depend on the model voluntarily following a prompt. Its proposed contribution is representation and inspectability, not enforcement strength.
+
+This block needs deeper paper-by-paper verification before publication-level claims are made.
+
+## Dual-LLM / privileged-planner patterns
+
+Architectures that isolate trusted planning from untrusted content address a different dimension of the problem.
+
+Authority Checkout is orthogonal: a checkout could be the authority representation underneath a single-model, dual-model or other agent architecture.
+
+## Cedar / OPA and policy-as-code
+
+Policy engines answer authorization questions from policy and request context.
+
+Authority Checkout should not recreate them. Its research question is whether **materializing the effective result** — including resources, capabilities, provenance, expiry and changes over time — provides something operationally useful beyond per-call evaluation and raw policy inspection.
+
+The project's explicit kill criterion is that, if the checkout tells a developer nothing useful beyond the policy inputs, the concept should be narrowed or stopped.
 
 ## IAM and agent identity governance
 
-Identity systems answer important questions such as:
+Identity systems answer questions such as:
 
 - Who or what is acting?
 - Who owns or sponsors it?
 - Which roles and entitlements does it have?
 - What is its lifecycle?
 
-Authority Checkout assumes those identity signals can be inputs, but asks a different runtime question:
+Authority Checkout assumes those signals can be inputs, but asks a different runtime question:
 
-> What state and capability should this actor have for this specific task right now?
+> What effective authority is materialized for this actor, for this task, right now?
 
-It should complement IAM rather than replace it.
+The checkout should be treated as an entitlement/runtime artifact, not as the agent's identity.
 
-## Capability security / least privilege
+## MCP gateways and agent-governance products
 
-The project inherits the principle that authority should be explicit and narrow rather than ambient.
+Commercial and open-source stacks increasingly offer per-agent identity, scoped tools, gateways and audit trails.
 
-An Authority Checkout can be viewed partly as a developer-facing materialization of effective capabilities plus the state those capabilities apply to.
+Authority Checkout is not intended to compete with that product category. It is a reference architecture and research probe that should be tested against those systems to see whether the checkout representation adds anything useful.
 
-## Sandboxes and ephemeral agents
+## Agentic governance taxonomies
 
-Agent sandboxes already isolate tools, files, credentials and execution environments.
+OWASP agentic security guidance, NIST AI risk-management guidance and FINOS agent-governance controls are existing taxonomies practitioners already use.
 
-Authority Checkout does not compete with sandboxing. A real implementation would likely use sandboxing as one enforcement mechanism underneath the abstraction.
+If the prototype grows beyond a toy, its controls should be mapped to established taxonomies rather than inventing a parallel vocabulary simply for novelty.
 
-## Information-flow control
+## Delegation
 
-Prompt injection and tool-mediated exfiltration often depend on where data came from and where it is allowed to flow.
+Authority propagation across multiple cooperating agents is now an early research candidate rather than a late feature.
 
-Simple role-based permission checks are insufficient for this.
+The interesting question is not merely whether each individual call was authorized, but whether a human can reconstruct:
 
-Provenance and information flow may eventually become first-class checkout dimensions.
+- where authority originated
+- how it narrowed or expanded at each hop
+- which agent/tool exercised it
+- who is attributable for the final effect
 
-## Externalized memory
+Claims that this is an unsolved or unique gap require deeper related-work verification before publication.
 
-The project's memory position is architectural:
+## July 2026 OpenAI / Hugging Face incident
 
-> persistent memory is system state that can be projected into an agent runtime.
+This incident is **not** evidence that Authority Checkout would have prevented a real-world breach.
 
-This makes memory subject to the same scoping, provenance and governance questions as other resources.
+First-party reports describe sandbox escape, infrastructure exploitation, credentials, lateral movement and third-party compromise. Those are below the layer currently modeled here.
 
-## Task-specific policy and mediated tool use
+Transferable architectural questions remain useful:
 
-Modern agent-security work increasingly evaluates proposed tool calls against deterministic policy derived from trusted task context.
+- What ambient authority exists outside the model-visible environment?
+- When should task authority expire?
+- Who has authority to pause or revoke automated work?
 
-Authority Checkout should be compared directly against these systems. The potential contribution is not the enforcement primitive itself, but whether one coherent materialized representation of state + authority improves inspection, debugging, testing and governance.
+The incident is therefore a boundary lesson and inspiration, not a validation case.
 
 ## Working novelty claim
 
-The project currently claims only this:
+The current claim is intentionally modest:
 
-> Authority Checkout is an exploratory systems abstraction for treating an agent's runtime world as a task-scoped materialization of state and authority, with explicit boundaries for expansion and consequential effects.
+> Authority Checkout is an exploratory systems representation for materializing effective agent authority as an inspectable, versionable and diffable artifact while keeping consequential effects behind live authorization.
 
-This claim should become narrower if experiments or related work show that it is already fully captured elsewhere.
+If experiments show that existing policy/governance tooling already provides the same legibility, this claim should become narrower.
