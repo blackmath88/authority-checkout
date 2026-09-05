@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Authority Research Board — Authority Checkout</title>
+<meta name="description" content="A working board for the agent-authority landscape: who is building what, and where Authority Checkout actually differs.">
+<link rel="stylesheet" href="board.css">
+</head>
+<body>
+<div class="app-shell" id="root"></div>
+
+<!-- D3 is optional. If it fails, the map degrades and the other views still work. -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+
+<!-- Canonical state. Add overlays after this line; they append, they do not rewrite. -->
+<script src="data/landscape.js"></script>
+<!-- <script src="data/landscape-session-04.js"></script> -->
+
+<script src="board.js"></script>
+</body>
+</html>
