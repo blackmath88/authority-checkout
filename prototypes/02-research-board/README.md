@@ -41,7 +41,8 @@ project. This board only keeps track of where the project sits.
 index.html                          entry point; registers scripts in order
 board.css                           visual language carried from br-ai-nstorm
 board.js                            rendering only; never writes
-data/landscape.js                   canonical state — the only writable truth
+data/landscape.js                   canonical state — the base writable truth
+data/landscape-session-04.js        Purview / Agent 365 correction overlay
 data/landscape-session-EXAMPLE.js   overlay template
 ```
 
@@ -97,24 +98,31 @@ figures should say so in `status` or `confidence`.
   sources before their `confidence` rises above `medium`.
 - Findings that weaken this project are valid entries and stay on the board.
 
-Three claims currently point back at Authority Checkout itself and remain
-unresolved:
+Four project-facing tensions now matter especially:
 
 - `c-aps-overlap` — the Agent Passport System draft may already formalize
   monotonic authority narrowing, including a reversibility dimension that
   overlaps the projection/effect-gate split.
-- `as-legibility` — the claim that no existing system produces an inspectable
-  authority artifact is asserted, not verified.
+- `c-purview-projection` — Microsoft Purview already computes protection scopes
+  and performs live content-policy evaluation for AI applications. Policy
+  projection itself is not a novelty claim available to this project.
+- `as-legibility` — the narrower claim that no existing system produces one
+  human-inspectable, execution-scoped artifact spanning the effective authority
+  picture is still unverified.
 - `as-reasoning` — the claim that materialization helps developer reasoning is
   the project's kill criterion and is still untested.
 
-Do not quietly resolve these to make the project look better.
+The Purview correction is deliberately a **partial contradiction** rather than a
+quiet resolution of `as-legibility`: Microsoft documentation verifies policy
+projection for one control-plane dimension; it does not by itself establish an
+equivalent composed authority artifact across identity, information policy,
+delegation and application semantics.
 
 ## Current state
 
-- 44 nodes
-- 46 relations
-- 17 timeline entries
+- 45 nodes
+- 47 relations
+- 18 timeline entries
 - 6 camps
 
 The D3 map is optional. Offline, it degrades to a note while the canonical state
